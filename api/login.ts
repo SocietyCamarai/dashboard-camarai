@@ -11,7 +11,6 @@ const REFRESH_TOKEN_EXPIRES_IN = '7d';
 
 // Almacenamiento en memoria de refresh tokens válidos por usuario (id)
 declare global {
-  // eslint-disable-next-line no-var
   var validRefreshTokens: Record<number, Set<string>> | undefined;
 }
 const validRefreshTokens: Record<number, Set<string>> = global.validRefreshTokens || (global.validRefreshTokens = {});
