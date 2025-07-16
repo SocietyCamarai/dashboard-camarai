@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import { useSidebar } from '../../../hooks/useSidebar';
+// import { useAuth } from '../../../hooks/useAuth';
 import {
   UserIcon, InfoIcon, MessageIcon, PaletteIcon, LogoutIcon
 } from '../../icons';
@@ -13,7 +14,8 @@ interface UserSubmenuProps {
 
 export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, position }) => {
   const { currentTheme } = useTheme();
-  const { handleOpenThemeSelector } = useSidebar();
+  const { handleOpenThemeSelector, handleLogout } = useSidebar();
+  // const { logout } = useAuth();
 
   if (!isOpen) return null;
 
@@ -21,7 +23,7 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
     if (position === 'simple') {
       return 'fixed bottom-4 left-26 rounded-lg shadow-lg py-3 px-2 z-50 w-56';
     } else {
-      return 'absolute bottom-full left-0 right-0 mb-2 rounded-lg shadow-lg py-2 z-10';
+      return 'absolute bottom-full left-0 right-0 mb-2 rounded-lg shadow-lg py-2 z-30';
     }
   };
 
@@ -30,12 +32,22 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
     onClose();
   };
 
+  const handleLogoutClick = () => {
+    console.log('[UserSubmenu] logout click');
+    handleLogout();
+    onClose();
+  };
+
+
   return (
     <>
       {/* Overlay to close submenu */}
       <div 
-        className="fixed inset-0 z-40"
-        onClick={onClose}
+        className="fixed inset-0 z-20"
+        onClick={e => {
+          // Solo cerrar si el click es fuera del menú
+          if (e.target === e.currentTarget) onClose();
+        }}
       />
       <div 
         className={`${getPositionClasses()} backdrop-blur-md border`}
@@ -116,6 +128,7 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
           <span>Temas</span>
         </button>
         <button 
+          onClick={handleLogoutClick}
           className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
           style={{ color: currentTheme.colors.text }}
           onMouseEnter={(e) => {

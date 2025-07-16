@@ -5,6 +5,9 @@ export interface SidebarContextType {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
   toggleSidebar: () => void;
+
+  // Logout handler for user menu
+  handleLogout: () => void;
   
   // Theme selector state
   isThemeSelectorOpen: boolean;
@@ -21,12 +24,13 @@ export interface SidebarContextType {
   setIsTeamMenuOpen: (open: boolean) => void;
   selectedTeam: string;
   setSelectedTeam: (team: string) => void;
-  
+
   // Handlers
   handleUserMenuToggle: () => void;
   handleTeamMenuToggle: () => void;
   handleTeamChange: (teamName: string) => void;
   handleOpenThemeSelector: () => void;
+
 }
 
 export interface SidebarProviderProps {

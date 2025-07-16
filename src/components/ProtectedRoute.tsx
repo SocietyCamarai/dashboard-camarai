@@ -3,7 +3,8 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 const ProtectedRoute: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+  if (isLoading) return null; // O un loader/spinner si prefieres
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 

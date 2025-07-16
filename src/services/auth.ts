@@ -14,8 +14,7 @@ export interface User {
 }
 
 export interface LoginResponse {
-  user: User;
-  token: string;
+  accessToken: string;
 }
 
 export async function loginRequest(email: string, password: string): Promise<LoginResponse> {
@@ -23,6 +22,7 @@ export async function loginRequest(email: string, password: string): Promise<Log
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
+    credentials: 'include', // Para recibir la cookie httpOnly
   });
   if (!response.ok) throw new Error('Credenciales inválidas');
   return response.json();
