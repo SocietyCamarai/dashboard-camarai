@@ -1,0 +1,134 @@
+import React from 'react';
+import { useTheme } from '../../../hooks/useTheme';
+import { useSidebar } from '../../../hooks/useSidebar';
+import {
+  UserIcon, InfoIcon, MessageIcon, PaletteIcon, LogoutIcon
+} from '../../icons';
+
+interface UserSubmenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+  position: 'simple' | 'detailed';
+}
+
+export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, position }) => {
+  const { currentTheme } = useTheme();
+  const { handleOpenThemeSelector } = useSidebar();
+
+  if (!isOpen) return null;
+
+  const getPositionClasses = () => {
+    if (position === 'simple') {
+      return 'fixed bottom-4 left-26 rounded-lg shadow-lg py-3 px-2 z-50 w-56';
+    } else {
+      return 'absolute bottom-full left-0 right-0 mb-2 rounded-lg shadow-lg py-2 z-10';
+    }
+  };
+
+  const handleThemeClick = () => {
+    handleOpenThemeSelector();
+    onClose();
+  };
+
+  return (
+    <>
+      {/* Overlay to close submenu */}
+      <div 
+        className="fixed inset-0 z-40"
+        onClick={onClose}
+      />
+      <div 
+        className={`${getPositionClasses()} backdrop-blur-md border`}
+        style={{
+          backgroundColor: `${currentTheme.colors.background}95`,
+          borderColor: `${currentTheme.colors.border}40`,
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        }}
+      >
+        {position === 'simple' && (
+          <div className="px-4 py-3 border-b border-gray-200">
+            <div 
+              className="font-medium text-sm"
+              style={{ color: currentTheme.colors.text }}
+            >
+              Fénix
+            </div>
+            <div 
+              className="text-xs"
+              style={{ color: currentTheme.colors.textSecondary }}
+            >
+              fenix@camarai.es
+            </div>
+          </div>
+        )}
+        
+        <button 
+          className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
+          style={{ color: currentTheme.colors.text }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = currentTheme.colors.border;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          <UserIcon className="w-4 h-4" />
+          Mi cuenta
+        </button>
+        <button 
+          className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
+          style={{ color: currentTheme.colors.text }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = currentTheme.colors.border;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          <InfoIcon className="w-4 h-4" />
+          Política de privacidad
+        </button>
+        <button 
+          className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
+          style={{ color: currentTheme.colors.text }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = currentTheme.colors.border;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          <MessageIcon className="w-4 h-4" />
+          Enviar comentarios
+        </button>
+        <button
+          onClick={handleThemeClick}
+          className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
+          style={{ color: currentTheme.colors.text }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = currentTheme.colors.border;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          <PaletteIcon className="w-4 h-4" />
+          <span>Temas</span>
+        </button>
+        <button 
+          className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
+          style={{ color: currentTheme.colors.text }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = currentTheme.colors.border;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          <LogoutIcon className="w-4 h-4" />
+          Cerrar sesión
+        </button>
+      </div>
+    </>
+  );
+}; 
