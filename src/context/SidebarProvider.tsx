@@ -33,6 +33,11 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
     setIsUserMenuOpenDetailed(false);
   };
 
+  const handleLogout = () => {
+    // TODO: Implement logout logic (e.g., clear auth, redirect, etc.)
+    console.log('[SidebarProvider] handleLogout called');
+  };
+
   const value = {
     isSidebarOpen,
     setIsSidebarOpen,
@@ -51,6 +56,7 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
     handleTeamMenuToggle,
     handleTeamChange,
     handleOpenThemeSelector,
+    handleLogout,
   };
 
   return (

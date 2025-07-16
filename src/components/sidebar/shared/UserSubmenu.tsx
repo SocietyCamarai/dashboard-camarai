@@ -32,11 +32,11 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
     onClose();
   };
 
-  const handleLogoutClick = () => {
-    console.log('[UserSubmenu] logout click');
-    handleLogout();
-    onClose();
-  };
+  // const handleLogoutClick = () => {
+  //   console.log('[UserSubmenu] logout click');
+  //   handleLogout();
+  //   onClose();
+  // };
 
 
   return (
@@ -128,7 +128,7 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
           <span>Temas</span>
         </button>
         <button 
-          onClick={handleLogoutClick}
+          onClick={() => { handleLogout(); onClose(); }}
           className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 hover:bg-opacity-10 rounded-md"
           style={{ color: currentTheme.colors.text }}
           onMouseEnter={(e) => {
