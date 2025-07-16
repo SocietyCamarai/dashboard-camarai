@@ -5,7 +5,6 @@ const DEMO_PASSWORD = '123456';
 
 // ✅ Lista de orígenes permitidos
 const allowedOrigins = [
-  'https://dashboard-camarai.vercel.app', // Tu dominio de producción
   `https://${process.env.VERCEL_URL}`, // La URL del despliegue actual (cubre previews)
   'http://localhost:3000' // Tu entorno local con Vite (ajusta el puerto si es necesario)
 ];
