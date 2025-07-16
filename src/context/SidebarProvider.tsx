@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import type { SidebarProviderProps } from './SidebarContextDef';
 import { SidebarContext } from './SidebarContext';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -9,6 +11,9 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
   const [isUserMenuOpenDetailed, setIsUserMenuOpenDetailed] = useState(false);
   const [isTeamMenuOpen, setIsTeamMenuOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState('Camarai');
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -34,8 +39,8 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
   };
 
   const handleLogout = () => {
-    // TODO: Implement logout logic (e.g., clear auth, redirect, etc.)
-    console.log('[SidebarProvider] handleLogout called');
+    logout();
+    navigate('/login');
   };
 
   const value = {

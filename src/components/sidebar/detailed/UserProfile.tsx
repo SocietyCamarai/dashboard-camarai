@@ -1,14 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import { useSidebar } from '../../../hooks/useSidebar';
-import { ChevronDownIcon, AccountIcon, PrivacyIcon, FeedbackIcon, ThemeIcon, LogoutIcon } from '../../icons';
+import { ChevronDownIcon } from '../../icons';
+import { UserSubmenu } from '../shared/UserSubmenu';
 
 export const UserProfile: React.FC = () => {
   const { currentTheme } = useTheme();
   const { 
     isUserMenuOpenDetailed, 
-    setIsUserMenuOpenDetailed, 
-    handleOpenThemeSelector 
+    setIsUserMenuOpenDetailed
   } = useSidebar();
 
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -24,11 +24,6 @@ export const UserProfile: React.FC = () => {
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [isUserMenuOpenDetailed, setIsUserMenuOpenDetailed]);
-
-  const handleThemeClick = () => {
-    handleOpenThemeSelector();
-    setIsUserMenuOpenDetailed(false);
-  };
 
   return (
     <div className="px-5 py-3 flex-shrink-0">
@@ -64,82 +59,11 @@ export const UserProfile: React.FC = () => {
         </button>
         {/* User Submenu for detailed mode */}
         {isUserMenuOpenDetailed && (
-          <div 
-            className="absolute bottom-full left-0 right-0 mb-2 rounded-lg shadow-lg py-2 z-10 backdrop-blur-xl border"
-            style={{
-              backgroundColor: `${currentTheme.colors.background}`,
-              borderColor: `${currentTheme.colors.border}50`,
-              // backdropFilter: 'blur(20px)',
-              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-            }}
-          >
-            <button 
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200"
-              style={{ color: currentTheme.colors.text }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = currentTheme.colors.border;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-            >
-              <AccountIcon className="w-4 h-4" />
-              Mi cuenta
-            </button>
-            <button 
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200"
-              style={{ color: currentTheme.colors.text }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = currentTheme.colors.border;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-            >
-              <PrivacyIcon className="w-4 h-4" />
-              Política de privacidad
-            </button>
-            <button 
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200"
-              style={{ color: currentTheme.colors.text }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = currentTheme.colors.border;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-            >
-              <FeedbackIcon className="w-4 h-4" />
-              Enviar comentarios
-            </button>
-            <button
-              onClick={handleThemeClick}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200"
-              style={{ color: currentTheme.colors.text }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = currentTheme.colors.border;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-            >
-              <ThemeIcon className="w-4 h-4" />
-              <span>Temas</span>
-            </button>
-            <button 
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200"
-              style={{ color: currentTheme.colors.text }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = currentTheme.colors.border;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-            >
-              <LogoutIcon className="w-4 h-4" />
-              Cerrar sesión
-            </button>
-          </div>
+          <UserSubmenu
+            isOpen={isUserMenuOpenDetailed}
+            onClose={() => setIsUserMenuOpenDetailed(false)}
+            position="detailed"
+          />
         )}
       </div>
     </div>

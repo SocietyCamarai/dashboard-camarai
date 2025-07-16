@@ -127,7 +127,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
    * Cierra la sesión del usuario
    */
   const logout = () => {
-    console.log('[AuthContext] logout called');
+    // console.log('[AuthContext] logout called');
     setUser(null);
     localStorage.removeItem('accessToken');
     localStorage.removeItem('hasRefreshToken');
