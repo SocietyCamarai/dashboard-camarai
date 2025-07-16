@@ -7,7 +7,6 @@ const ACCESS_TOKEN_EXPIRES_IN = '15m';
 
 // Compartido con login.ts (en producción, extraer a módulo común)
 declare global {
-  // eslint-disable-next-line no-var
   var validRefreshTokens: Record<number, Set<string>> | undefined;
 }
 const validRefreshTokens: Record<number, Set<string>> = global.validRefreshTokens || (global.validRefreshTokens = {});
