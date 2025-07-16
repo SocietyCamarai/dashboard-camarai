@@ -119,15 +119,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const decoded = jwtDecode<JwtPayload>(data.accessToken);
     setUser(decoded.user);
     scheduleRefresh(decoded.exp);
-    // Puedes guardar el token si lo necesitas:
-    // localStorage.setItem('accessToken', data.accessToken);
   };
 
   /**
    * Cierra la sesión del usuario
    */
   const logout = () => {
-    // console.log('[AuthContext] logout called');
     setUser(null);
     localStorage.removeItem('accessToken');
     localStorage.removeItem('hasRefreshToken');

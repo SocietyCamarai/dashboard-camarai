@@ -95,6 +95,15 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     validRefreshTokens[user.id].add(refreshToken);
     // // Ejemplo con base de datos:
     // // await db.refreshTokens.insert({ userId: user.id, token: refreshToken });
+
+    // ===> [AQUÍ] GUARDAR EL REFRESHTOKEN EN TU SERVICIO EXTERNO
+    // Ejemplo:
+    // await fetch('https://tu-api.com/refreshTokens', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ userId: user.id, token: refreshToken }),
+    // });
+
     const isLocalhost = origin?.includes('localhost');
     const secureFlag = isLocalhost ? '' : ' Secure;';
     res.setHeader(

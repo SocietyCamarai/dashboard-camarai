@@ -37,6 +37,26 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
   try {
     const { userId } = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as { userId: number };
+
+    // ===> [AQUÍ] VALIDAR EL REFRESHTOKEN EN TU SERVICIO EXTERNO
+    // Ejemplo:
+    // const validateRes = await fetch('https://tu-api.com/refreshTokens/validate', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ userId, token: refreshToken }),
+    // });
+    // if (!validateRes.ok) {
+    //   return res.status(401).json({ error: 'Invalid refresh token' });
+    // }
+
+    // ===> [AQUÍ] ELIMINAR EL REFRESHTOKEN USADO EN TU SERVICIO EXTERNO (ROTACIÓN)
+    // Ejemplo:
+    // await fetch('https://tu-api.com/refreshTokens/delete', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ userId, token: refreshToken }),
+    // });
+
     // Validar refresh token en memoria
     if (!validRefreshTokens[userId] || !validRefreshTokens[userId].has(refreshToken)) {
       return res.status(401).json({ error: 'Invalid refresh token' });
@@ -52,8 +72,13 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       { expiresIn: '7d' }
     );
     validRefreshTokens[userId].add(newRefreshToken);
-    // // Ejemplo con base de datos:
-    // // await db.refreshTokens.insert({ userId, token: newRefreshToken });
+    // // ===> [AQUÍ] GUARDAR EL NUEVO REFRESHTOKEN ROTADO EN TU SERVICIO EXTERNO
+    // Ejemplo:
+    // await fetch('https://tu-api.com/refreshTokens', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ userId, token: newRefreshToken }),
+    // });
     // Usuario hardcodeado demo
     const user = {
       id: userId,

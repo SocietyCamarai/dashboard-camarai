@@ -31,6 +31,15 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
   try {
     const { userId } = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as { userId: number };
+
+    // ===> [AQUÍ] ELIMINAR TODOS LOS REFRESHTOKENS DEL USUARIO EN TU SERVICIO EXTERNO
+    // Ejemplo:
+    // await fetch('https://tu-api.com/refreshTokens/deleteAll', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ userId }),
+    // });
+
     // Eliminar todos los refresh tokens del usuario
     delete validRefreshTokens[userId];
     // // Ejemplo con base de datos:
