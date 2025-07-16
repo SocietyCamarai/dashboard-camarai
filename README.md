@@ -20,7 +20,7 @@ A modern React dashboard with authentication interface.
 
 2. Start the development server:
    ```bash
-   npm run dev
+   npx vercel dev
    ```
 
 3. Open your browser and navigate to the URL shown in the terminal.
@@ -62,6 +62,8 @@ To build for production:
 
 ```bash
 npm run build
+npx vercel --prod
 ```
+or deploy a change to production
 
 The built files will be in the `dist` directory.
