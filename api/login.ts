@@ -39,7 +39,20 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
   if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
     res.status(200).json({
-      user: { email },
+      user: {
+        id: 1,
+        email: DEMO_EMAIL,
+        nombre: 'Demo',
+        apellidos: 'User',
+        telefono: '600123456',
+        foto: null,
+        empresa_id: 101,
+        establecimiento_id: 201,
+        ultimo_login: new Date().toISOString(),
+        estado: 'activo',
+        created_at: new Date('2023-01-01T10:00:00Z').toISOString(),
+        updated_at: new Date().toISOString(),
+      },
       token: 'demo-token',
     });
   } else {

@@ -1,5 +1,20 @@
+export interface User {
+  id: number;
+  email: string;
+  nombre: string;
+  apellidos: string | null;
+  telefono: string;
+  foto: string | null;
+  empresa_id: number | null;
+  establecimiento_id: number | null;
+  ultimo_login: string | null;
+  estado: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface LoginResponse {
-  user: { email: string };
+  user: User;
   token: string;
 }
 

@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import { loginRequest } from '../services/auth';
-import type { LoginResponse } from '../services/auth';
+import type { LoginResponse, User } from '../services/auth';
 
 /**
  * Contexto de autenticación global para la app.
@@ -9,7 +9,7 @@ import type { LoginResponse } from '../services/auth';
  * El login solo acepta test@demo.com / 123456 como demo.
  */
 interface AuthContextType {
-  user: null | { email: string };
+  user: null | User;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -17,7 +17,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<null | { email: string }>(null);
+  const [user, setUser] = useState<null | User>(null);
 
   /**
    * Login demo: solo acepta test@demo.com / 123456

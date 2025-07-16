@@ -79,7 +79,7 @@ const Login: React.FC = () => {
           </div>
           <div className="flex mb-8 border-b-2" style={{ borderColor: currentTheme.colors.textSecondary }}>
             <button
-              className={`flex-1 py-3 text-lg font-semibold transition-all ${tab === 'login' ? 'border-b-2' : ''}`}
+              className={`flex-1 text-lg font-semibold transition-all ${tab === 'login' ? 'border-b-2' : ''}`}
               style={{
                 borderColor: tab === 'login' ? borderColor : 'transparent',
                 color: tab === 'login' ? borderColor : currentTheme.colors.textSecondary,
