@@ -4,8 +4,9 @@ const DEMO_EMAIL = 'test@demo.com';
 const DEMO_PASSWORD = '123456';
 
 // ✅ Lista de orígenes permitidos
+// Usa una variable de entorno personalizada para producción
 const allowedOrigins = [
-  `https://${process.env.VERCEL_URL}`, // La URL del despliegue actual (cubre previews)
+  process.env.DASHBOARD_ORIGIN || '', // Debes definir DASHBOARD_ORIGIN en Vercel (por ejemplo: https://dashboard-camarai.vercel.app)
   'http://localhost:3000' // Tu entorno local con Vite (ajusta el puerto si es necesario)
 ];
 
