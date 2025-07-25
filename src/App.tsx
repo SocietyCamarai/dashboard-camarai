@@ -1,57 +1,128 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { RedirectProvider } from './context/RedirectProvider';
 import ProtectedRoute from './components/ProtectedRoute';
+import GuestRoute from './components/GuestRoute';
+import OnboardingRoute from './components/OnboardingRoute';
 import Layout from './components/layout/Layout';
-import { Home, Page2 } from './pages';
+import { Home, Comandas, Ambientes, PlanoMesas, Tienda, QR, Ubicaciones, EntidadesLegales, MarcasVirtuales, Promociones, Horarios, KDS, WhatsApp, Instagram, Facebook, WebChat, GoogleMaps, Impresoras, Equipo, Eventos } from './pages';
 import Login from './pages/Login';
+import Onboarding from './pages/Onboarding';
+import { useAuth } from './hooks/useAuth';
 
 function DashboardRoutes() {
-  const location = useLocation();
-  const navigate = useNavigate();
   // Extraer la sección de la URL: /dashboard/:section
-  const section = location.pathname.split('/')[2] || 'home';
-
-  const handlePageChange = (page: string) => {
-    navigate(`/dashboard/${page}`);
-  };
+  const { section } = useParams<{ section?: string }>();
+  const currentSection = section || 'home';
 
   let content;
-  switch (section) {
+  switch (currentSection) {
     case 'home':
       content = <Home />;
       break;
-    case 'tables':
-    case 'store':
+    case 'comandas':
+      content = <Comandas />;
+      break;
+    case 'ambientes':
+      content = <Ambientes />;
+      break;
+    case 'plano-mesas':
+      content = <PlanoMesas />;
+      break;
+    case 'tienda':
+      content = <Tienda />;
+      break;
     case 'qr':
-    case 'locations':
-    case 'legal':
-    case 'brands':
-    case 'promotions':
-    case 'schedules':
+      content = <QR />;
+      break;
+    case 'ubicaciones':
+      content = <Ubicaciones />;
+      break;
+    case 'entidades-legales':
+      content = <EntidadesLegales />;
+      break;
+    case 'marcas-virtuales':
+      content = <MarcasVirtuales />;
+      break;
+    case 'promociones':
+      content = <Promociones />;
+      break;
+    case 'horarios':
+      content = <Horarios />;
+      break;
     case 'kds':
+      content = <KDS />;
+      break;
     case 'whatsapp':
+      content = <WhatsApp />;
+      break;
     case 'instagram':
+      content = <Instagram />;
+      break;
     case 'facebook':
+      content = <Facebook />;
+      break;
     case 'webchat':
-    case 'maps':
-    case 'printers':
-    case 'team':
-    case 'events':
-    case 'orders':
-    case 'settings':
-    case 'billing':
-    case 'reports':
-      content = <Page2 />;
+      content = <WebChat />;
+      break;
+    case 'google-maps':
+      content = <GoogleMaps />;
+      break;
+    case 'impresoras':
+      content = <Impresoras />;
+      break;
+    case 'equipo':
+      content = <Equipo />;
+      break;
+    case 'eventos':
+      content = <Eventos />;
       break;
     default:
       content = <Home />;
   }
 
   return (
-    <Layout currentPage={section} onPageChange={handlePageChange}>
+    <Layout currentPage={currentSection}>
       {content}
     </Layout>
+  );
+}
+
+function AppContent() {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <Routes>
+      {/* Rutas públicas solo para no autenticados */}
+      <Route element={<GuestRoute />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
+
+      {/* Rutas de onboarding */}
+      <Route element={<OnboardingRoute />}>
+        <Route path="/onboarding" element={<Onboarding />} />
+      </Route>
+
+      {/* Rutas protegidas */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard/home" element={<DashboardRoutes />} />
+        <Route path="/dashboard/:section" element={<DashboardRoutes />} />
+        <Route path="/dashboard" element={<Navigate to="/dashboard/home" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />
+      </Route>
+
+      {/* Catch-all */}
+      <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
+    </Routes>
   );
 }
 
@@ -60,16 +131,9 @@ function App() {
     <AuthProvider>
       <ThemeProvider>
         <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard/home" element={<DashboardRoutes />} />
-              <Route path="/dashboard/:section" element={<DashboardRoutes />} />
-              <Route path="/dashboard" element={<Navigate to="/dashboard/home" replace />} />
-              <Route path="/" element={<Navigate to="/dashboard/home" replace />} />
-            </Route>
-            <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
-          </Routes>
+          <RedirectProvider>
+            <AppContent />
+          </RedirectProvider>
         </Router>
       </ThemeProvider>
     </AuthProvider>

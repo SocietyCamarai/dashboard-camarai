@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="w-full h-full">
-      <Header title="Buenos días, Fenixsadas!" />
+      <Header title="Buenos días, Fenix! <3" />
       <FiltersAndExport 
         onDateRangeChange={handleDateRangeChange}
         // onExportCSV={handleExportCSV}

@@ -1,0 +1,10 @@
+export type RedirectStatus =
+  | 'LOGIN_SUCCESS'
+  | 'ONBOARDING_REQUIRED'
+  | 'ONBOARDING_SUCCESS'
+  | 'TOKEN_EXPIRED'
+  | 'LOGOUT'
+  | 'UNAUTHORIZED'
+  | 'DASHBOARD'
+  | 'HOME'
+  | 'ERROR'; 

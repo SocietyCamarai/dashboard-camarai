@@ -94,3 +94,21 @@ a-hole canvas.js-canvas {
     width: 100%;
     height: 100%;
 }
+
+.custom-input-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #b0b0b0 #F3F4F6;
+}
+.custom-input-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  margin-right: 8px; /* visual separation */
+}
+.custom-input-scrollbar::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+.custom-input-scrollbar::-webkit-scrollbar-track {
+  /* background: #222; */
+  border-radius: 8px;
+}

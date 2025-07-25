@@ -2,6 +2,7 @@ import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { useNavigation } from '../../context';
 import { useSidebar } from '../../hooks/useSidebar';
+import { useTokenRefresh } from '../../hooks/useTokenRefresh';
 import Sidebar from '../sidebar/Sidebar';
 import ThemeSelector from '../themeSelector/ThemeSelector';
 import { NavigationProvider, SidebarProvider } from '../../context';
@@ -9,7 +10,7 @@ import { TeamMenu, UserSubmenu } from '../sidebar/shared';
 import { XIcon, MenuIcon } from '../icons';
 import type { LayoutProps } from '../../types';
 
-const LayoutContent: React.FC<LayoutProps> = ({ children, currentPage, onPageChange }) => {
+const LayoutContent: React.FC<LayoutProps> = ({ children, currentPage }) => {
   const { currentTheme, isDarkTheme } = useTheme();
   const { navigationType } = useNavigation();
   const { 
@@ -23,6 +24,9 @@ const LayoutContent: React.FC<LayoutProps> = ({ children, currentPage, onPageCha
     isTeamMenuOpen,
     setIsTeamMenuOpen
   } = useSidebar();
+  
+  // Inicializar el refresh automático de tokens
+  useTokenRefresh();
 
   return (
     <div 
@@ -49,7 +53,6 @@ const LayoutContent: React.FC<LayoutProps> = ({ children, currentPage, onPageCha
       {/* Sidebar */}
       <Sidebar 
         currentPage={currentPage} 
-        onPageChange={onPageChange} 
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
@@ -111,11 +114,11 @@ const LayoutContent: React.FC<LayoutProps> = ({ children, currentPage, onPageCha
   );
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, currentPage, onPageChange }) => {
+const Layout: React.FC<LayoutProps> = ({ children, currentPage }) => {
   return (
     <NavigationProvider>
       <SidebarProvider>
-        <LayoutContent currentPage={currentPage} onPageChange={onPageChange}>
+        <LayoutContent currentPage={currentPage}>
           {children}
         </LayoutContent>
       </SidebarProvider>

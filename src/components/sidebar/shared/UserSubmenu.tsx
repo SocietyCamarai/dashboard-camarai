@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import { useSidebar } from '../../../hooks/useSidebar';
-// import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 import {
   UserIcon, InfoIcon, MessageIcon, PaletteIcon, LogoutIcon
 } from '../../icons';
@@ -15,7 +15,7 @@ interface UserSubmenuProps {
 export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, position }) => {
   const { currentTheme } = useTheme();
   const { handleOpenThemeSelector, handleLogout } = useSidebar();
-  // const { logout } = useAuth();
+  const { user } = useAuth();
 
   if (!isOpen) return null;
 
@@ -63,13 +63,13 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
               className="font-medium text-sm"
               style={{ color: currentTheme.colors.text }}
             >
-              Fénix
+              {user?.nombre || 'Usuario'}
             </div>
             <div 
               className="text-xs"
               style={{ color: currentTheme.colors.textSecondary }}
             >
-              fenix@camarai.es
+              {user?.email || 'usuario@ejemplo.com'}
             </div>
           </div>
         )}

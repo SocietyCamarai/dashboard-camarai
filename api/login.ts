@@ -1,118 +1,76 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
-const DEMO_EMAIL = 'test@demo.com';
-const DEMO_PASSWORD = '123456';
+const BACKEND_URL = process.env.BACKEND_URL;
 
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'access-secret-demo';
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'refresh-secret-demo';
-const ACCESS_TOKEN_EXPIRES_IN = '15m';
-const REFRESH_TOKEN_EXPIRES_IN = '7d';
-
-// Almacenamiento en memoria de refresh tokens válidos por usuario (id)
-declare global {
-  var validRefreshTokens: Record<number, Set<string>> | undefined;
+interface LoginResponse {
+  message: string;
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: number;
+    email: string;
+    nombre: string;
+    apellidos?: string;
+    telefono?: string;
+    foto?: string;
+    empresa_id?: number;
+    establecimiento_id?: number;
+    rol_id?: number;
+  };
 }
-const validRefreshTokens: Record<number, Set<string>> = global.validRefreshTokens || (global.validRefreshTokens = {});
-// // Ejemplo con base de datos:
-// // await db.refreshTokens.insert({ userId, token });
-// // await db.refreshTokens.delete({ userId, token });
-// // await db.refreshTokens.find({ userId });
 
-// Rate limiting simple en memoria por IP
-const loginAttempts: Record<string, { count: number; lastAttempt: number }> = {};
-const MAX_ATTEMPTS = 5;
-const WINDOW_MS = 15 * 60 * 1000; // 15 minutos
-// // Ejemplo con Redis/base de datos:
-// // await redis.incr(ip), await redis.expire(ip, WINDOW_MS/1000)
+function isAxiosError(error: unknown): error is { response?: { status: number; data: unknown }; message: string } {
+  return typeof error === 'object' && error !== null && 'message' in error;
+}
 
-const allowedOrigins = [
-  process.env.DASHBOARD_ORIGIN || '',
-  'http://localhost:3000'
-];
-
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Vary', 'Origin');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-  }
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    return res.status(200).end();
-  }
-  if (!origin || !allowedOrigins.includes(origin)) {
-    return res.status(403).json({ error: 'Forbidden' });
-  }
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
-  // Rate limiting por IP
-  const ip = req.headers['x-forwarded-for']?.toString().split(',')[0] || req.socket?.remoteAddress || 'unknown';
-  const now = Date.now();
-  if (!loginAttempts[ip] || now - loginAttempts[ip].lastAttempt > WINDOW_MS) {
-    loginAttempts[ip] = { count: 1, lastAttempt: now };
-  } else {
-    loginAttempts[ip].count++;
-    loginAttempts[ip].lastAttempt = now;
-  }
-  if (loginAttempts[ip].count > MAX_ATTEMPTS) {
-    return res.status(429).json({ error: 'Too many login attempts. Try again later.' });
-  }
+  
   const { email, password } = req.body || {};
-  if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-    const user = {
-      id: 1,
-      email: DEMO_EMAIL,
-      nombre: 'Demo',
-      apellidos: 'User',
-      telefono: '600123456',
-      foto: null,
-      empresa_id: 101,
-      establecimiento_id: 201,
-      ultimo_login: new Date().toISOString(),
-      estado: 'activo',
-      created_at: new Date('2023-01-01T10:00:00Z').toISOString(),
-      updated_at: new Date().toISOString(),
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email y password son requeridos' });
+  }
+  
+  try {
+    const response = await axios.post<LoginResponse>(`${BACKEND_URL}/login`, { email, password });
+    const { user, accessToken, refreshToken } = response.data;
+    
+    if (!user || !accessToken) {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+    
+    // Configurar cookie httpOnly y secure para refresh token
+    const isProduction = process.env.NODE_ENV === 'production';
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProduction, // Solo HTTPS en producción
+      sameSite: 'strict' as const,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+      path: '/'
     };
-    const accessToken = jwt.sign(
-      { user },
-      ACCESS_TOKEN_SECRET,
-      { expiresIn: ACCESS_TOKEN_EXPIRES_IN }
-    );
-    // Generar refresh token único
-    const refreshToken = jwt.sign(
-      { userId: user.id, rand: Math.random().toString(36).slice(2) },
-      REFRESH_TOKEN_SECRET,
-      { expiresIn: REFRESH_TOKEN_EXPIRES_IN }
-    );
-    // Guardar refresh token en memoria
-    if (!validRefreshTokens[user.id]) validRefreshTokens[user.id] = new Set();
-    validRefreshTokens[user.id].add(refreshToken);
-    // // Ejemplo con base de datos:
-    // // await db.refreshTokens.insert({ userId: user.id, token: refreshToken });
-
-    // ===> [AQUÍ] GUARDAR EL REFRESHTOKEN EN TU SERVICIO EXTERNO
-    // Ejemplo:
-    // await fetch('https://tu-api.com/refreshTokens', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ userId: user.id, token: refreshToken }),
-    // });
-
-    const isLocalhost = origin?.includes('localhost');
-    const secureFlag = isLocalhost ? '' : ' Secure;';
-    res.setHeader(
-      'Set-Cookie',
-      `refreshToken=${refreshToken}; HttpOnly; Path=/; SameSite=Strict;${secureFlag} Max-Age=604800`
-    );
-    res.status(200).json({
-      accessToken,
+    
+    // Establecer cookie con refresh token
+    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; ${Object.entries(cookieOptions)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('; ')}`);
+    
+    return res.status(200).json({ 
+      user, 
+      accessToken 
+      // No enviar refreshToken en el body, ya está en cookies
     });
-  } else {
-    res.status(401).json({ error: 'Credenciales inválidas' });
+  } catch (error: unknown) {
+    if (isAxiosError(error) && error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    
+    console.error('Error en login:', error);
+    return res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: isAxiosError(error) ? error.message : 'Unknown error' 
+    });
   }
 }

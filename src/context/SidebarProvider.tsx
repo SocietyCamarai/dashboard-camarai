@@ -38,9 +38,15 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
     setIsUserMenuOpenDetailed(false);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error en logout:', error);
+      // Redirigir de todas formas
+      navigate('/login');
+    }
   };
 
   const value = {

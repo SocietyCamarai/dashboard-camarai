@@ -1,138 +1,143 @@
-import React, { createContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { loginRequest } from '../services/auth';
-import type { LoginResponse, User } from '../services/auth';
-import { jwtDecode } from 'jwt-decode';
+import { 
+  loginRequest, 
+  registerRequest, 
+  logoutRequest, 
+  refreshTokenRequest,
+  validateTokenRequest,
+  type User,
+  type RegisterRequest
+} from '../services/auth';
+// import { useRedirect } from '../context/useRedirect'; // ELIMINADO
 
-interface JwtPayload {
-  user: User;
-  exp: number;
-  iat: number;
-}
-
-/**
- * Contexto de autenticación global para la app.
- * Provee el usuario actual, login y logout.
- * El login solo acepta test@demo.com / 123456 como demo.
- */
 interface AuthContextType {
   user: null | User;
   isLoading: boolean;
+  isAuthenticated: boolean;
+  needsOnboarding: boolean;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  register: (userData: RegisterRequest) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshAuth: () => Promise<void>;
+  updateUserState: (newUserData: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-async function refreshAccessToken(): Promise<string | null> {
-  try {
-    const res = await fetch('/api/refresh', {
-      method: 'POST',
-      credentials: 'include',
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.accessToken;
-  } catch {
-    return null;
-  }
-}
-
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<null | User>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const refreshTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // Limpia el timer al desmontar
+  // Getter: autenticado si hay user y token
+  const isAuthenticated = !!user && !!localStorage.getItem('accessToken');
+  const needsOnboarding = !!user && !user.onboardingCompleto;
+
+  // Validar autenticación al montar el componente
   useEffect(() => {
-    return () => {
-      if (refreshTimer.current) clearTimeout(refreshTimer.current);
-    };
-  }, []);
-
-  // Programa el refresco automático
-  const scheduleRefresh = (exp: number) => {
-    if (refreshTimer.current) clearTimeout(refreshTimer.current);
-    const now = Date.now();
-    const expiresAt = exp * 1000;
-    // Refrescar 1 minuto antes de expirar
-    const msUntilRefresh = Math.max(expiresAt - now - 60_000, 0);
-    refreshTimer.current = setTimeout(async () => {
-      const newToken = await refreshAccessToken();
-      if (newToken) {
-        localStorage.setItem('accessToken', newToken);
-        const decoded = jwtDecode<JwtPayload>(newToken);
-        setUser(decoded.user);
-        scheduleRefresh(decoded.exp);
-      } else {
-        setUser(null);
-        localStorage.removeItem('accessToken');
-      }
-    }, msUntilRefresh);
-  };
-
-  // Restaurar sesión al montar
-  useEffect(() => {
-    const restoreSession = async () => {
-      let accessToken = localStorage.getItem('accessToken');
-      let decoded: JwtPayload | null = null;
-      if (accessToken) {
+    const validateAuth = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          clearUserData();
+          setIsLoading(false);
+          return;
+        }
+        // Intentar validar el token con el backend
+        const userData = await validateTokenRequest();
+        setUser(userData.user);
+      } catch {
+        // Token inválido, intentar refresh
         try {
-          decoded = jwtDecode<JwtPayload>(accessToken);
-          // Verificar expiración
-          if (decoded.exp * 1000 < Date.now()) {
-            accessToken = null;
-          }
+          await refreshTokenRequest();
+          // Si el refresh fue exitoso, obtener datos del usuario del token actualizado
+          const userData = await validateTokenRequest();
+          setUser(userData.user);
         } catch {
-          accessToken = null;
+          // Si el refresh falla, limpiar todo
+          clearUserData();
         }
+      } finally {
+        setIsLoading(false);
       }
-      // Solo intentar refresh si hasRefreshToken está presente
-      if (!accessToken && localStorage.getItem('hasRefreshToken')) {
-        const newToken = await refreshAccessToken();
-        if (newToken) {
-          localStorage.setItem('accessToken', newToken);
-          decoded = jwtDecode<JwtPayload>(newToken);
-        }
-      }
-      if (decoded) {
-        setUser(decoded.user);
-        scheduleRefresh(decoded.exp);
-      } else {
-        setUser(null);
-        localStorage.removeItem('accessToken');
-      }
-      setIsLoading(false);
     };
-    restoreSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    validateAuth();
   }, []);
 
-  /**
-   * Login demo: solo acepta test@demo.com / 123456
-   */
-  const login = async (email: string, password: string) => {
-    const data: LoginResponse = await loginRequest(email, password);
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('hasRefreshToken', '1');
-    // Decodificar el accessToken para extraer los datos del usuario
-    const decoded = jwtDecode<JwtPayload>(data.accessToken);
-    setUser(decoded.user);
-    scheduleRefresh(decoded.exp);
+  const clearUserData = () => {
+    localStorage.removeItem('accessToken');
+    setUser(null);
   };
 
-  /**
-   * Cierra la sesión del usuario
-   */
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('hasRefreshToken');
-    if (refreshTimer.current) clearTimeout(refreshTimer.current);
+  const login = async (email: string, password: string) => {
+    setIsLoading(true);
+    try {
+      const data = await loginRequest(email, password);
+      setUser(data.user);
+      // No limpiar el usuario si solo necesita onboarding
+    } catch (error) {
+      // Solo limpiar si el error no es usuario-inactivo
+      if (!(error instanceof Error && error.message === 'usuario-inactivo')) {
+        clearUserData();
+      }
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateUserState = (newUserData: User) => {
+    setUser(newUserData);
+  };
+
+  const register = async (userData: RegisterRequest) => {
+    setIsLoading(true);
+    try {
+      await registerRequest(userData);
+      // Después del registro exitoso, hacer login automático
+      await login(userData.email, userData.password);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    setIsLoading(true);
+    try {
+      await logoutRequest();
+      // clearUserData() ya se ejecuta dentro de logoutRequest si es exitoso
+    } catch (error) {
+      clearUserData();
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const refreshAuth = async () => {
+    try {
+      if (!isAuthenticated) {
+        clearUserData();
+        return;
+      }
+      await refreshTokenRequest();
+    } catch {
+      clearUserData();
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isLoading, 
+      isAuthenticated, 
+      needsOnboarding,
+      login, 
+      register, 
+      logout, 
+      refreshAuth,
+      updateUserState
+    }}>
       {children}
     </AuthContext.Provider>
   );

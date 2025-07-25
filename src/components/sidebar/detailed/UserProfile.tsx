@@ -3,6 +3,7 @@ import { useTheme } from '../../../hooks/useTheme';
 import { useSidebar } from '../../../hooks/useSidebar';
 import { ChevronDownIcon } from '../../icons';
 import { UserSubmenu } from '../shared/UserSubmenu';
+import { useAuth } from '../../../hooks/useAuth';
 
 export const UserProfile: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -10,7 +11,7 @@ export const UserProfile: React.FC = () => {
     isUserMenuOpenDetailed, 
     setIsUserMenuOpenDetailed
   } = useSidebar();
-
+  const { user } = useAuth();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Cerrar menú usuario al hacer click fuera
@@ -39,20 +40,20 @@ export const UserProfile: React.FC = () => {
           <img
             src="https://fenixbinario.com/assets/img/manusa-2019.jpg"
             alt="Foto de perfil del usuario"
-            className="w-10 h-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-12 h-9 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div className="flex-1 text-left">
             <div 
               className="font-medium"
               style={{ color: currentTheme.colors.text }}
             >
-              Fénix
+              {user?.nombre || 'Usuario'}
             </div>
             <div 
               className="text-xs"
               style={{ color: currentTheme.colors.textSecondary }}
             >
-              fenix@camarai.es
+              {user?.email || 'usuario@ejemplo.com'}
             </div>
           </div>
           <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpenDetailed ? 'rotate-180' : ''}`} />

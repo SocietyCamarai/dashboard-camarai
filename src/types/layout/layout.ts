@@ -1,7 +1,7 @@
 export interface LayoutProps {
   children: React.ReactNode;
   currentPage: string;
-  onPageChange: (page: string) => void;
+  onPageChange?: (page: string) => void;
 }
 
 export interface SidebarProps {
