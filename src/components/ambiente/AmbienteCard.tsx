@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PrinterIcon, EditIcon, UsersIcon, UtensilsIcon, ActivityIcon, PowerIcon, PercentIcon, SunIcon, MicIcon, CoffeeIcon, SmartphoneIcon, TrashIcon } from '../icons';
+import { PrinterIcon, UsersIcon, UtensilsIcon, ActivityIcon, PowerIcon, PercentIcon, SunIcon, MicIcon, CoffeeIcon, SmartphoneIcon, TrashIcon } from '../icons';
 import { SwitchToggle } from '../SwitchToggle';
 import type { AmbienteCardProps } from '../../types/components';
 import { useTheme } from '../../hooks/useTheme';
