@@ -49,4 +49,5 @@ export interface ThemeContextType {
   themeCategories: ThemeCategories;
   getAllThemes: () => Theme[];
   isDarkTheme: (theme: Theme) => boolean;
+  getButtonTextColor: (theme: Theme) => string;
 } 

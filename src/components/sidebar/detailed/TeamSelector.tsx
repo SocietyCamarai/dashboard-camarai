@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../../hooks/useTheme';
+import { useIconColors } from '../../../hooks/useIconColors';
 import { useSidebar } from '../../../hooks/useSidebar';
 import { ChevronDownIcon, RestaurantIcon, XIcon } from '../../icons';
 
@@ -10,21 +11,33 @@ interface DetailedTeamSelectorProps {
 export const TeamSelector: React.FC<DetailedTeamSelectorProps> = ({ onClose }) => {
   const { currentTheme } = useTheme();
   const { selectedTeam, handleTeamMenuToggle, isTeamMenuOpen } = useSidebar();
+  const iconColors = useIconColors(false);
 
   return (
     <div className="p-4">
       <div className="flex items-center gap-2">
         <button
           onClick={handleTeamMenuToggle}
-          className="flex-1 flex items-center gap-2 p-2 rounded-lg transition-colors duration-200 hover:bg-opacity-10"
+          className="flex-1 flex items-center gap-2 p-2 rounded-lg transition-all duration-200 hover:bg-opacity-10"
           style={{ 
             backgroundColor: `${currentTheme.colors.primary}20`,
-            color: currentTheme.colors.text 
+            color: currentTheme.colors.text,
+            transition: 'all 0.2s ease-in-out'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}30`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}20`;
           }}
         >
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: currentTheme.colors.primary, padding: '2px' }}
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors duration-200"
+            style={{ 
+              backgroundColor: currentTheme.colors.primary, 
+              padding: '2px',
+              transition: iconColors.transition
+            }}
           >
             {selectedTeam === 'Camarai' ? (
               <img
@@ -35,23 +48,48 @@ export const TeamSelector: React.FC<DetailedTeamSelectorProps> = ({ onClose }) =
                 height="16"
               />
             ) : (
-              <RestaurantIcon size={24} />
+              <RestaurantIcon 
+                size={24} 
+                style={{ 
+                  color: currentTheme.colors.white,
+                  transition: iconColors.transition
+                }}
+              />
             )}
           </div>
           <span className="flex-1 text-left font-medium truncate text-sm">{selectedTeam}</span>
-          <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 flex-shrink-0 ${isTeamMenuOpen ? 'rotate-180' : ''}`} />
+          <ChevronDownIcon 
+            className={`w-4 h-4 transition-all duration-200 flex-shrink-0 ${isTeamMenuOpen ? 'rotate-180' : ''}`}
+            style={{ 
+              color: iconColors.color,
+              transition: iconColors.transition
+            }}
+          />
         </button>
         {/* Mobile Close Button - Next to team selector for detailed mode */}
         <div className="lg:hidden">
           <button
             onClick={onClose}
-            className="p-2 rounded-lg transition-colors duration-200 hover:bg-opacity-10 flex-shrink-0"
+            className="p-2 rounded-lg transition-all duration-200 hover:bg-opacity-10 flex-shrink-0"
             style={{ 
               backgroundColor: `${currentTheme.colors.primary}20`,
-              color: currentTheme.colors.text 
+              color: currentTheme.colors.text,
+              transition: 'all 0.2s ease-in-out'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}30`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}20`;
             }}
           >
-            <XIcon className="w-4 h-4" />
+            <XIcon 
+              className="w-4 h-4 transition-colors duration-200"
+              style={{ 
+                color: iconColors.color,
+                transition: iconColors.transition
+              }}
+            />
           </button>
         </div>
       </div>

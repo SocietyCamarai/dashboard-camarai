@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
+import { useIconColors } from '../../../hooks/useIconColors';
 import { useSidebar } from '../../../hooks/useSidebar';
 import { ChevronDownIcon } from '../../icons';
 import { UserSubmenu } from '../shared/UserSubmenu';
@@ -13,6 +14,7 @@ export const UserProfile: React.FC = () => {
   } = useSidebar();
   const { user } = useAuth();
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const iconColors = useIconColors(false);
 
   // Cerrar menú usuario al hacer click fuera
   useEffect(() => {
@@ -31,10 +33,17 @@ export const UserProfile: React.FC = () => {
       <div className="relative" ref={userMenuRef}>
         <button
           onClick={() => setIsUserMenuOpenDetailed(!isUserMenuOpenDetailed)}
-          className="w-full flex items-center gap-2 p-2 text-sm rounded-lg transition-colors duration-300 hover:bg-opacity-10 group"
+          className="w-full flex items-center gap-2 p-2 text-sm rounded-lg transition-all duration-300 hover:bg-opacity-10 group"
           style={{ 
             color: currentTheme.colors.text,
-            backgroundColor: `${currentTheme.colors.primary}20`
+            backgroundColor: `${currentTheme.colors.primary}20`,
+            transition: 'all 0.2s ease-in-out'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}30`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}20`;
           }}
         >
           <img
@@ -56,7 +65,13 @@ export const UserProfile: React.FC = () => {
               {user?.email || 'usuario@ejemplo.com'}
             </div>
           </div>
-          <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpenDetailed ? 'rotate-180' : ''}`} />
+          <ChevronDownIcon 
+            className={`w-4 h-4 transition-all duration-200 ${isUserMenuOpenDetailed ? 'rotate-180' : ''}`}
+            style={{ 
+              color: iconColors.color,
+              transition: iconColors.transition
+            }}
+          />
         </button>
         {/* User Submenu for detailed mode */}
         {isUserMenuOpenDetailed && (

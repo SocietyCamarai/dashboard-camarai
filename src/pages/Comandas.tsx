@@ -1,10 +1,18 @@
 import React from 'react';
+import { Header, FiltersAndExport, Table } from '../components';
 
-const Comandas: React.FC = () => (
-  <div className="flex flex-col items-center justify-center h-full">
-    <h1 className="text-2xl font-bold mb-2">Comandas</h1>
-    <p className="text-gray-500">Esta es la página de Comandas.</p>
-  </div>
-);
+const Comandas: React.FC = () => {
+  return (
+    <div className="w-full h-full">
+      <div className="mb-8">
+        <Header title="Comandas" />
+      </div>
+      <div className="flex flex-col gap-4">
+        <FiltersAndExport />
+        <Table />
+      </div>
+    </div>
+  );
+};
 
 export default Comandas; 

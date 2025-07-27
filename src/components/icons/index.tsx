@@ -1,15 +1,15 @@
 import React from 'react';
 import type { IconProps } from '../../types/ui';
 
-export const HouseIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-house ${className}`}> 
+export const HouseIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-house ${className}`} style={style}> 
     <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
     <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
   </svg>
 );
 
-export const ClipboardListIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-clipboard-list ${className}`}> 
+export const ClipboardListIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-clipboard-list ${className}`} style={style}> 
     <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
     <path d="M12 11h4"></path>
@@ -19,8 +19,8 @@ export const ClipboardListIcon: React.FC<IconProps> = ({ className = "", size = 
   </svg>
 );
 
-export const ViewIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-view ${className}`}> 
+export const ViewIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-view ${className}`} style={style}> 
     <path d="M21 17v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2"></path>
     <path d="M21 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"></path>
     <circle cx="12" cy="12" r="1"></circle>
@@ -156,8 +156,8 @@ export const PrinterIcon: React.FC<IconProps> = ({ className = "", size = 24 }) 
   </svg>
 );
 
-export const UsersIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-users ${className}`}> 
+export const UsersIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-users ${className}`} style={style}> 
     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
     <circle cx="9" cy="7" r="4"></circle>
     <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -283,8 +283,8 @@ export const CogIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
   </svg>
 );
 
-export const PlusIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 20 20" fill="currentColor" className={className}>
+export const PlusIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 20 20" fill="currentColor" className={className} style={style}>
     <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"></path>
   </svg>
 );
@@ -313,9 +313,17 @@ export const MenuIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => 
   </svg>
 );
 
-export const SunIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m-9-9h1m3.4-6.4l.7.7m12.1-.7l-.7.7M6.3 17.7l-.7.7M20 12h-1m-4 0a3 3 0 11-6 0 3 3 0 016 0z" />
+export const SunIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
   </svg>
 );
 
@@ -345,4 +353,129 @@ export const PaletteIcon: React.FC<IconProps> = ({ className = "", size = 24 }) 
     <circle cx="6.5" cy="12.5" r=".5" />
     <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
   </svg>
-  );
+);
+
+export const ChevronLeft: React.FC<IconProps> = ({ className = "", size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+  </svg>
+);
+
+export const ChevronRight: React.FC<IconProps> = ({ className = "", size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+  </svg>
+);
+
+export const MoreHorizontal: React.FC<IconProps> = ({ className = "", size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <circle cx="12" cy="12" r="1" />
+    <circle cx="19" cy="12" r="1" />
+    <circle cx="5" cy="12" r="1" />
+  </svg>
+);
+
+export const UtensilsIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+    <path d="M7 2v20"></path>
+    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+  </svg>
+);
+
+export const ToggleOnIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0" className={className} style={style}>
+    <rect x="2" y="6" width="22" height="12" rx="6" fill="currentColor" />
+    <circle cx="18" cy="12" r="4" fill="white" />
+  </svg>
+);
+
+export const ToggleOffIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <rect x="2" y="6" width="20" height="12" rx="6" fill="currentColor" />
+    <circle cx="6" cy="12" r="4" fill="white" />
+  </svg>
+);
+
+export const CheckCircleIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+export const XCircleIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+export const EditIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+  </svg>
+);
+
+export const MicIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v2a7 7 0 01-14 0v-2" />
+    <line strokeLinecap="round" strokeLinejoin="round" x1="12" y1="19" x2="12" y2="23" />
+    <line strokeLinecap="round" strokeLinejoin="round" x1="8" y1="23" x2="16" y2="23" />
+  </svg>
+);
+
+export const CoffeeIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M18 8h1a4 4 0 010 8h-1" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+    <line strokeLinecap="round" strokeLinejoin="round" x1="6" y1="1" x2="6" y2="4" />
+    <line strokeLinecap="round" strokeLinejoin="round" x1="10" y1="1" x2="10" y2="4" />
+    <line strokeLinecap="round" strokeLinejoin="round" x1="14" y1="1" x2="14" y2="4" />
+  </svg>
+);
+
+export const SmartphoneIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+    <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+    <path d="M9 22v-4h6v4"></path>
+    <path d="M8 6h.01"></path>
+    <path d="M16 6h.01"></path>
+    <path d="M12 6h.01"></path>
+    <path d="M12 10h.01"></path>
+    <path d="M12 14h.01"></path>
+    <path d="M16 10h.01"></path>
+    <path d="M16 14h.01"></path>
+    <path d="M8 10h.01"></path>
+    <path d="M8 14h.01"></path>
+  </svg>
+);
+
+export const TrashIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
+    <polyline points="3,6 5,6 21,6" />
+    <path d="M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2" />
+    <line x1="10" y1="11" x2="10" y2="17" />
+    <line x1="14" y1="11" x2="14" y2="17" />
+  </svg>
+);
+
+export const ActivityIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+    <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+  </svg>
+);
+
+export const PowerIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+    <path d="M12 2v10"></path>
+    <path d="M18.4 6.6a9 9 0 1 1-12.77.04"></path>
+  </svg>
+);
+
+export const PercentIcon: React.FC<IconProps> = ({ className = "", size = 24, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+    <line x1="19" x2="5" y1="5" y2="19"></line>
+    <circle cx="6.5" cy="6.5" r="2.5"></circle>
+    <circle cx="17.5" cy="17.5" r="2.5"></circle>
+  </svg>
+);

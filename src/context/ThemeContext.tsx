@@ -61,6 +61,9 @@ const lightThemes: Theme[] = [
       text: '#1f2937',
       textSecondary: '#6b7280',
       border: '#e5e7eb',
+      white: '#ffffff',
+      error: '#ef4444',
+      success: '#10b981',
     },
   },
   {
@@ -73,6 +76,9 @@ const lightThemes: Theme[] = [
       text: '#1f2937',
       textSecondary: '#6b7280',
       border: '#e5e7eb',
+      white: '#ffffff',
+      error: '#ef4444',
+      success: '#10b981',
     },
   },
 ];
@@ -89,6 +95,9 @@ const darkThemes: Theme[] = [
       text: '#f9fafb',
       textSecondary: '#d1d5db',
       border: '#374151',
+      white: '#ffffff',
+      error: '#ef4444',
+      success: '#10b981',
     },
   },
 ];
@@ -104,6 +113,11 @@ const themeCategories: ThemeCategories = {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState<Theme>(officialLightTheme);
+
+  // Función helper para obtener el color del texto en botones
+  const getButtonTextColor = (theme: Theme): string => {
+    return theme.colors.white || '#ffffff';
+  };
 
   const setTheme = (themeName: string) => {
     // Buscar en tema oficial (claro y oscuro)
@@ -135,13 +149,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return [officialLightTheme, officialDarkTheme, ...lightThemes, ...darkThemes];
   };
 
-  return (
-    <ThemeContext.Provider value={{ 
-      currentTheme, 
-      setTheme, 
+    return (
+    <ThemeContext.Provider value={{
+      currentTheme,
+      setTheme,
       themeCategories,
       getAllThemes,
-      isDarkTheme
+      isDarkTheme,
+      getButtonTextColor
     }}>
       {children}
     </ThemeContext.Provider>

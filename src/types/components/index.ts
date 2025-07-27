@@ -1,4 +1,6 @@
-export type { FiltersAndExportProps } from './filters';
-export type { HeaderProps } from './header';
-export type { ThemeSelectorProps } from './themeSelector';
-export type { StatCardProps } from './charts'; 
+export * from './charts';
+export * from './filters';
+export * from './header';
+export * from './table';
+export * from './themeSelector';
+export * from './ambiente'; 

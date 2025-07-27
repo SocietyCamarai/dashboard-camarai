@@ -49,12 +49,29 @@ const mainMenuItems = [
 
 export const Navigation: React.FC<{ currentPage: string }> = ({ currentPage }) => {
   const { currentTheme } = useTheme();
+  
+  // Función auxiliar para obtener colores de iconos
+  const getIconColors = (isActive: boolean) => {
+    return {
+      color: isActive ? currentTheme.colors.primary : currentTheme.colors.text,
+      hoverColor: currentTheme.colors.primary,
+      secondaryColor: currentTheme.colors.textSecondary,
+      activeColor: currentTheme.colors.primary,
+      inactiveColor: currentTheme.colors.text,
+      transition: 'color 0.2s ease-in-out'
+    };
+  };
+  
   return (
     <nav className="flex-1 overflow-y-auto scrollbar-hidden min-h-0">
       <ul data-sidebar="menu" className="flex w-full min-w-0 flex-col gap-1">
         {mainMenuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentPage === item.href.replace('/', '');
+          // Extraer la sección del href (ej: '/dashboard/ambientes' -> 'ambientes')
+          const itemSection = item.href.split('/').pop() || '';
+          const isActive = currentPage === itemSection;
+          const iconColors = getIconColors(isActive);
+          
           return (
             <li key={item.href} data-sidebar="menu-item" className="group/menu-item relative flex justify-center">
               <Link to={item.href}>
@@ -65,11 +82,27 @@ export const Navigation: React.FC<{ currentPage: string }> = ({ currentPage }) =
                   className="flex items-center justify-center w-12 h-12 rounded-lg transition-colors duration-200 hover:bg-sidebar-accent focus-visible:ring-2"
                   data-state="closed"
                   style={{
-                    color: isActive ? currentTheme.colors.primary : currentTheme.colors.text,
+                    color: iconColors.color,
                     backgroundColor: isActive ? currentTheme.colors.sidebar : 'transparent',
+                    transition: 'all 0.2s ease-in-out'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = iconColors.hoverColor;
+                    e.currentTarget.style.backgroundColor = `${currentTheme.colors.primary}10`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = iconColors.color;
+                    e.currentTarget.style.backgroundColor = isActive ? currentTheme.colors.sidebar : 'transparent';
                   }}
                 >
-                  <Icon size={24} className="shrink-0" style={{ color: isActive ? currentTheme.colors.primary : currentTheme.colors.text }} />
+                  <Icon 
+                    size={24} 
+                    className="shrink-0 transition-colors duration-200" 
+                    style={{ 
+                      color: iconColors.color,
+                      transition: iconColors.transition
+                    }}
+                  />
                 </button>
               </Link>
             </li>
