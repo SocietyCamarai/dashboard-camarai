@@ -1,10 +1,8 @@
 import React from 'react';
+import { PlanoMesas } from '../components/planoMesas';
 
-const PlanoMesas: React.FC = () => (
-  <div className="flex flex-col items-center justify-center h-full">
-    <h1 className="text-2xl font-bold mb-2">Plano de Mesas</h1>
-    <p className="text-gray-500">Esta es la página de Plano de Mesas.</p>
-  </div>
-);
+const PlanoMesasPage: React.FC = () => {
+  return <PlanoMesas />;
+};
 
-export default PlanoMesas; 
+export default PlanoMesasPage; 

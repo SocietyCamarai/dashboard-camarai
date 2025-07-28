@@ -3,4 +3,5 @@ export { default as FiltersAndExport } from './home/blocks/FiltersAndExport';
 export { default as Sidebar } from './sidebar/Sidebar';
 export { Table } from './table';
 export * from './ambiente';
-export { SwitchToggle } from './SwitchToggle'; 
+export { SwitchToggle } from './SwitchToggle';
+export * from './planoMesas'; 

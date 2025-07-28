@@ -3,4 +3,6 @@ export { useNavigation } from './useNavigation';
 export { useSidebar } from './useSidebar';
 export { useTheme } from './useTheme';
 export { useTokenRefresh } from './useTokenRefresh';
-export { useIconColors } from './useIconColors'; 
+export { useIconColors } from './useIconColors';
+export { usePlanoMesas } from './usePlanoMesas';
+export { useDragAndResize } from './useDragAndResize'; 

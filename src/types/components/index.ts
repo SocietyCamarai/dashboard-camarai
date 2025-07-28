@@ -3,4 +3,5 @@ export * from './filters';
 export * from './header';
 export * from './table';
 export * from './themeSelector';
-export * from './ambiente'; 
+export * from './ambiente';
+export * from './planoMesas'; 
