@@ -29,7 +29,7 @@ export const PlanoMesas: React.FC = () => {
     <>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0 md:gap-8 md:p-8 md:pt-0">
         <div dir="ltr" data-orientation="horizontal">
-          {/* Tabs de ambientes */}
+          {/* Pestañas de ambientes */}
           <Tabs
             ambientes={state.ambientes}
             ambienteActivo={state.ambienteActivo}
