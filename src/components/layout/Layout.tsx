@@ -9,6 +9,7 @@ import { NavigationProvider, SidebarProvider } from '../../context';
 import { TeamMenu, UserSubmenu } from '../sidebar/shared';
 import { XIcon, MenuIcon } from '../icons';
 import type { LayoutProps } from '../../types';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const LayoutContent: React.FC<LayoutProps> = ({ children, currentPage }) => {
   const { currentTheme, isDarkTheme } = useTheme();
@@ -120,6 +121,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage }) => {
       <SidebarProvider>
         <LayoutContent currentPage={currentPage}>
           {children}
+          <SpeedInsights />
         </LayoutContent>
       </SidebarProvider>
     </NavigationProvider>

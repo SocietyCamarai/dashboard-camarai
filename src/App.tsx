@@ -10,7 +10,6 @@ import { Home, Comandas, Ambientes, PlanoMesas, Tienda, QR, Ubicaciones, Entidad
 import Login from './pages/Login';
 import Onboarding from './pages/Onboarding';
 import { useAuth } from './hooks/useAuth';
-import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function DashboardRoutes() {
   // Extraer la sección de la URL: /dashboard/:section
@@ -133,7 +132,6 @@ function App() {
       <ThemeProvider>
         <Router>
           <RedirectProvider>
-            <SpeedInsights />
             <AppContent />
           </RedirectProvider>
         </Router>
