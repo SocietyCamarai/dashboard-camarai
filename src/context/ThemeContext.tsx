@@ -20,9 +20,9 @@ const officialLightTheme: Theme = {
     white: '#ffffff',
     error: '#ef4444',
     success: '#10b981',
-    inputBackgroundDark: '#374151',
-    inputBorderDark: '#4b5563',
-    cardBackgroundDark: '#1f2937',
+    inputBackgroundDark: '#ffffff',
+    inputBorderDark: '#e5e7eb',
+    cardBackgroundDark: '#ffffff',
   },
 };
 
@@ -64,6 +64,9 @@ const lightThemes: Theme[] = [
       white: '#ffffff',
       error: '#ef4444',
       success: '#10b981',
+      inputBackgroundDark: '#ffffff',
+      inputBorderDark: '#e5e7eb',
+      cardBackgroundDark: '#ffffff',
     },
   },
   {
@@ -79,6 +82,9 @@ const lightThemes: Theme[] = [
       white: '#ffffff',
       error: '#ef4444',
       success: '#10b981',
+      inputBackgroundDark: '#ffffff',
+      inputBorderDark: '#e5e7eb',
+      cardBackgroundDark: '#ffffff',
     },
   },
 ];
@@ -98,6 +104,9 @@ const darkThemes: Theme[] = [
       white: '#ffffff',
       error: '#ef4444',
       success: '#10b981',
+      inputBackgroundDark: '#374151',
+      inputBorderDark: '#4b5563',
+      cardBackgroundDark: '#1f2937',
     },
   },
 ];

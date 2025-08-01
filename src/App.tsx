@@ -6,7 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import GuestRoute from './components/GuestRoute';
 import OnboardingRoute from './components/OnboardingRoute';
 import Layout from './components/layout/Layout';
-import { Home, Comandas, Ambientes, PlanoMesas, Tienda, QR, Ubicaciones, EntidadesLegales, MarcasVirtuales, Promociones, Horarios, KDS, WhatsApp, Instagram, Facebook, WebChat, GoogleMaps, Impresoras, Equipo, Eventos } from './pages';
+import { Home, Comandas, Ambientes, PlanoMesas, Tienda, QR, Ubicaciones, EntidadesLegales, MarcasVirtuales, Promociones, Horarios, KDS, WhatsApp, Instagram, Facebook, WebChat, GoogleMaps, Impresoras, Equipo, Eventos, SettingsAccount, Settings } from './pages';
 import Login from './pages/Login';
 import Onboarding from './pages/Onboarding';
 import { useAuth } from './hooks/useAuth';
@@ -89,6 +89,30 @@ function DashboardRoutes() {
   );
 }
 
+function SettingsRoutes() {
+  // Extraer la sección de la URL: /settings/:section
+  const { section } = useParams<{ section?: string }>();
+  const currentSection = section || 'main';
+
+  let content;
+  switch (currentSection) {
+    case 'main':
+      content = <Settings />;
+      break;
+    case 'account':
+      content = <SettingsAccount />;
+      break;
+    default:
+      content = <Settings />;
+  }
+
+  return (
+    <Layout currentPage="settings">
+      {content}
+    </Layout>
+  );
+}
+
 function AppContent() {
   const { isLoading } = useAuth();
 
@@ -117,7 +141,10 @@ function AppContent() {
         <Route path="/dashboard/home" element={<DashboardRoutes />} />
         <Route path="/dashboard/:section" element={<DashboardRoutes />} />
         <Route path="/dashboard" element={<Navigate to="/dashboard/home" replace />} />
-        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />
+        <Route path="/settings/main" element={<SettingsRoutes />} />
+        <Route path="/settings/:section" element={<SettingsRoutes />} />
+        <Route path="/settings" element={<Navigate to="/settings/main" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />e 
       </Route>
 
       {/* Catch-all */}

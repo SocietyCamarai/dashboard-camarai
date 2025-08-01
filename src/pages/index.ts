@@ -20,4 +20,8 @@ export { default as Equipo } from './Equipo';
 export { default as Eventos } from './Eventos';
 
 // Nuevo: exportar Login (a crear)
-export { default as Login } from './Login'; 
+export { default as Login } from './Login';
+
+// Configuración
+export { default as SettingsAccount } from './dashboard/settings/SettingsAccount';
+export { default as Settings } from './dashboard/settings/Settings'; 

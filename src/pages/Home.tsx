@@ -2,8 +2,8 @@ import React from 'react';
 import { Header, FiltersAndExport, Table } from '../components';
 import ChartStats from '../components/home/blocks/ChartStats';
 const Home: React.FC = () => {
-  const handleDateRangeChange = (range: string) => {
-    console.log('Date range changed:', range);
+  const handleDateRangeChange = (_range: string) => {
+    // Aquí se manejaría el cambio de rango de fechas
   };
 
   return (

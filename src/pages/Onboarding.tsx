@@ -57,7 +57,11 @@ const Onboarding: React.FC = () => {
         const response = await completeOnboardingRequest(formData);
         updateUserState(response.user);
         setConfirmado(true);
-        setTimeout(() => handleRedirect('ONBOARDING_SUCCESS'), 1200);
+        // Usar requestIdleCallback si está disponible, sino requestAnimationFrame
+        const scheduleCallback = window.requestIdleCallback || requestAnimationFrame;
+        scheduleCallback(() => {
+          setTimeout(() => handleRedirect('ONBOARDING_SUCCESS'), 1200);
+        });
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error al completar el onboarding');
       } finally {

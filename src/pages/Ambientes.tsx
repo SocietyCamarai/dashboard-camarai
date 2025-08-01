@@ -47,8 +47,7 @@ const Ambientes: React.FC = () => {
     );
   };
 
-  const handleImprimirQR = (id: string) => {
-    console.log(`Imprimiendo QR para ambiente ${id}`);
+  const handleImprimirQR = (_id: string) => {
     // Aquí iría la lógica para imprimir QR
   };
 

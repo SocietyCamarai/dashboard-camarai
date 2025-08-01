@@ -49,10 +49,14 @@ const Table: React.FC<TableProps> = ({
     if (page < 1 || page > totalPages) return;
     
     setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentPage(page);
-      setIsAnimating(false);
-    }, 150);
+    // Usar requestIdleCallback si está disponible, sino requestAnimationFrame
+    const scheduleCallback = window.requestIdleCallback || requestAnimationFrame;
+    scheduleCallback(() => {
+      setTimeout(() => {
+        setCurrentPage(page);
+        setIsAnimating(false);
+      }, 150);
+    });
   };
   
   const handleSelectOrder = (orderId: string) => {
@@ -86,31 +90,35 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
-  // Cerrar dropdown al hacer clic fuera
+  // Cerrar dropdown al hacer clic fuera (optimizado)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      const dropdownElements = document.querySelectorAll('[data-dropdown]');
-      const headerDropdownElement = document.querySelector('[data-header-dropdown]');
-      let clickedInsideDropdown = false;
-      
-      dropdownElements.forEach(element => {
-        if (element.contains(target)) {
+      // Usar requestIdleCallback si está disponible, sino requestAnimationFrame
+      const scheduleCallback = window.requestIdleCallback || requestAnimationFrame;
+      scheduleCallback(() => {
+        const target = event.target as Node;
+        const dropdownElements = document.querySelectorAll('[data-dropdown]');
+        const headerDropdownElement = document.querySelector('[data-header-dropdown]');
+        let clickedInsideDropdown = false;
+        
+        dropdownElements.forEach(element => {
+          if (element.contains(target)) {
+            clickedInsideDropdown = true;
+          }
+        });
+        
+        if (headerDropdownElement && headerDropdownElement.contains(target)) {
           clickedInsideDropdown = true;
         }
+        
+        if (!clickedInsideDropdown) {
+          setOpenDropdown(null);
+          setOpenHeaderDropdown(false);
+        }
       });
-      
-      if (headerDropdownElement && headerDropdownElement.contains(target)) {
-        clickedInsideDropdown = true;
-      }
-      
-      if (!clickedInsideDropdown) {
-        setOpenDropdown(null);
-        setOpenHeaderDropdown(false);
-      }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside, { passive: true });
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -126,8 +134,7 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
-  const handleAction = (action: string, orderId: string) => {
-    console.log(`${action} para orden ${orderId}`);
+  const handleAction = (_action: string, _orderId: string) => {
     setOpenDropdown(null);
   };
 
@@ -135,8 +142,7 @@ const Table: React.FC<TableProps> = ({
     setOpenHeaderDropdown(!openHeaderDropdown);
   };
 
-  const handleHeaderAction = (action: string) => {
-    console.log(`Header action: ${action}`);
+  const handleHeaderAction = (_action: string) => {
     setOpenHeaderDropdown(false);
   };
   

@@ -20,7 +20,8 @@ import {
   MapIcon,
   PrinterIcon,
   UsersIcon,
-  CalendarIcon
+  CalendarIcon,
+  SettingsIcon
 } from '../../icons';
 import { Link } from 'react-router-dom';
 
@@ -43,6 +44,7 @@ const mainMenuItems = [
   { href: '/dashboard/webchat', label: 'WebChat', icon: BotIcon },
   { href: '/dashboard/google-maps', label: 'Google Maps', icon: MapIcon },
   { href: '/dashboard/impresoras', label: 'Impresoras', icon: PrinterIcon },
+  { href: '/settings', label: 'Configuración', icon: SettingsIcon },
   { href: '/dashboard/equipo', label: 'Equipo', icon: UsersIcon },
   { href: '/dashboard/eventos', label: 'Eventos', icon: CalendarIcon },
 ];
