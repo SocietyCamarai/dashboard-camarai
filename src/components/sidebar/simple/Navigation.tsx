@@ -1,50 +1,40 @@
 import React from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import {
-  HouseIcon,
-  ClipboardListIcon,
-  ViewIcon,
-  LayoutGridIcon,
-  ShoppingBagIcon,
-  QrCodeIcon,
-  MapPinIcon,
-  FileTextIcon,
-  TagsIcon,
-  BadgePercentIcon,
-  ClockIcon,
-  LaptopIcon,
-  MessageSquareIcon,
-  InstagramIcon,
-  FacebookIcon,
-  BotIcon,
-  MapIcon,
-  PrinterIcon,
-  UsersIcon,
-  CalendarIcon
+  CustomInicioIcon,
+  CustomComandasIcon,
+  CustomAmbientesIcon,
+  CustomPlanoMesasIcon,
+  CustomCartaIcon,
+  CustomCategoriasIcon,
+  CustomProductosIcon,
+  CustomIngredientesIcon,
+  CustomKDSIcon,
+  CustomPersonalIcon,
+  CustomReportesIcon,
+  CustomInventarioIcon,
+  CustomReservasIcon,
+  CustomPromocionesIcon,
+  CustomConfiguracionIcon
 } from '../../icons';
 import { Link } from 'react-router-dom';
 
 const mainMenuItems = [
-  { href: '/dashboard/home', label: 'Inicio', icon: HouseIcon },
-  { href: '/dashboard/comandas', label: 'Comandas', icon: ClipboardListIcon },
-  { href: '/dashboard/ambientes', label: 'Ambientes', icon: ViewIcon },
-  { href: '/dashboard/plano-mesas', label: 'Plano de mesas', icon: LayoutGridIcon },
-  { href: '/dashboard/tienda', label: 'Tienda', icon: ShoppingBagIcon },
-  { href: '/dashboard/qr', label: 'QR', icon: QrCodeIcon },
-  { href: '/dashboard/ubicaciones', label: 'Ubicaciones', icon: MapPinIcon },
-  { href: '/dashboard/entidades-legales', label: 'Entidades Legales', icon: FileTextIcon },
-  { href: '/dashboard/marcas-virtuales', label: 'Marcas virtuales', icon: TagsIcon },
-  { href: '/dashboard/promociones', label: 'Promociones', icon: BadgePercentIcon },
-  { href: '/dashboard/horarios', label: 'Horarios', icon: ClockIcon },
-  { href: '/dashboard/kds', label: 'KDS', icon: LaptopIcon },
-  { href: '/dashboard/whatsapp', label: 'WhatsApp', icon: MessageSquareIcon },
-  { href: '/dashboard/instagram', label: 'Instagram', icon: InstagramIcon },
-  { href: '/dashboard/facebook', label: 'Facebook', icon: FacebookIcon },
-  { href: '/dashboard/webchat', label: 'WebChat', icon: BotIcon },
-  { href: '/dashboard/google-maps', label: 'Google Maps', icon: MapIcon },
-  { href: '/dashboard/impresoras', label: 'Impresoras', icon: PrinterIcon },
-  { href: '/dashboard/equipo', label: 'Equipo', icon: UsersIcon },
-  { href: '/dashboard/eventos', label: 'Eventos', icon: CalendarIcon },
+  { href: '/dashboard/home', label: 'Inicio', icon: CustomInicioIcon },
+  { href: '/dashboard/comandas', label: 'Comandas', icon: CustomComandasIcon },
+  { href: '/dashboard/ambientes', label: 'Ambientes', icon: CustomAmbientesIcon },
+  { href: '/dashboard/plano-mesas', label: 'Plano de mesas', icon: CustomPlanoMesasIcon },
+  { href: '/dashboard/carta', label: 'Carta', icon: CustomCartaIcon },
+  { href: '/dashboard/categorias', label: 'Categorías', icon: CustomCategoriasIcon },
+  { href: '/dashboard/productos', label: 'Productos', icon: CustomProductosIcon },
+  { href: '/dashboard/ingredientes', label: 'Ingredientes', icon: CustomIngredientesIcon },
+  { href: '/dashboard/kds', label: 'KDS', icon: CustomKDSIcon },
+  { href: '/dashboard/personal', label: 'Personal', icon: CustomPersonalIcon },
+  { href: '/dashboard/reportes', label: 'Reportes', icon: CustomReportesIcon },
+  { href: '/dashboard/inventario', label: 'Inventario', icon: CustomInventarioIcon },
+  { href: '/dashboard/reservas', label: 'Reservas', icon: CustomReservasIcon },
+  { href: '/dashboard/promociones', label: 'Promociones', icon: CustomPromocionesIcon },
+  { href: '/settings', label: 'Configuración', icon: CustomConfiguracionIcon }
 ];
 
 export const Navigation: React.FC<{ currentPage: string }> = ({ currentPage }) => {
@@ -69,7 +59,10 @@ export const Navigation: React.FC<{ currentPage: string }> = ({ currentPage }) =
           const Icon = item.icon;
           // Extraer la sección del href (ej: '/dashboard/ambientes' -> 'ambientes')
           const itemSection = item.href.split('/').pop() || '';
-          const isActive = currentPage === itemSection;
+          // Para configuración, comparar con 'settings', para el resto con la sección
+          const isActive = item.href.startsWith('/settings') 
+            ? currentPage === 'settings' 
+            : currentPage === itemSection;
           const iconColors = getIconColors(isActive);
           
           return (
@@ -111,4 +104,4 @@ export const Navigation: React.FC<{ currentPage: string }> = ({ currentPage }) =
       </ul>
     </nav>
   );
-}; 
+};

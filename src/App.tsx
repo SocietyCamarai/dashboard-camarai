@@ -6,7 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import GuestRoute from './components/GuestRoute';
 import OnboardingRoute from './components/OnboardingRoute';
 import Layout from './components/layout/Layout';
-import { Home, Comandas, Ambientes, PlanoMesas, Tienda, QR, Ubicaciones, EntidadesLegales, MarcasVirtuales, Promociones, Horarios, KDS, WhatsApp, Instagram, Facebook, WebChat, GoogleMaps, Impresoras, Equipo, Eventos, SettingsAccount, Settings } from './pages';
+import { Home, Comandas, Ambientes, PlanoMesas, Promociones, KDS, SettingsAccount, Settings } from './pages';
 import Login from './pages/Login';
 import Onboarding from './pages/Onboarding';
 import { useAuth } from './hooks/useAuth';
@@ -30,53 +30,35 @@ function DashboardRoutes() {
     case 'plano-mesas':
       content = <PlanoMesas />;
       break;
-    case 'tienda':
-      content = <Tienda />;
+    case 'carta':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Carta</h1><p>Página en desarrollo...</p></div>;
       break;
-    case 'qr':
-      content = <QR />;
+    case 'categorias':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Categorías</h1><p>Página en desarrollo...</p></div>;
       break;
-    case 'ubicaciones':
-      content = <Ubicaciones />;
+    case 'productos':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Productos</h1><p>Página en desarrollo...</p></div>;
       break;
-    case 'entidades-legales':
-      content = <EntidadesLegales />;
+    case 'ingredientes':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Ingredientes</h1><p>Página en desarrollo...</p></div>;
       break;
-    case 'marcas-virtuales':
-      content = <MarcasVirtuales />;
+    case 'personal':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Personal</h1><p>Página en desarrollo...</p></div>;
+      break;
+    case 'reportes':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Reportes</h1><p>Página en desarrollo...</p></div>;
+      break;
+    case 'inventario':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Inventario</h1><p>Página en desarrollo...</p></div>;
+      break;
+    case 'reservas':
+      content = <div className="p-6"><h1 className="text-2xl font-bold">Reservas</h1><p>Página en desarrollo...</p></div>;
       break;
     case 'promociones':
       content = <Promociones />;
       break;
-    case 'horarios':
-      content = <Horarios />;
-      break;
     case 'kds':
       content = <KDS />;
-      break;
-    case 'whatsapp':
-      content = <WhatsApp />;
-      break;
-    case 'instagram':
-      content = <Instagram />;
-      break;
-    case 'facebook':
-      content = <Facebook />;
-      break;
-    case 'webchat':
-      content = <WebChat />;
-      break;
-    case 'google-maps':
-      content = <GoogleMaps />;
-      break;
-    case 'impresoras':
-      content = <Impresoras />;
-      break;
-    case 'equipo':
-      content = <Equipo />;
-      break;
-    case 'eventos':
-      content = <Eventos />;
       break;
     default:
       content = <Home />;
