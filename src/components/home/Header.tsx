@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ title, className, rounded = true }) => 
           backgroundColor: `${rounded ? currentTheme.colors.sidebar : ''}`,
         }}
       >
-        <div className="inline-block">
+        <div className="inline-block ml-2">
           <h1
             className={`text-left ${className ? ` ${className}` : 'text-[2.2rem]'}`}
             style={{

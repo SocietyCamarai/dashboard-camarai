@@ -217,7 +217,7 @@ export const EstablishmentTab: React.FC<EstablishmentTabProps> = ({
 
   // Validar teléfono
   const isValidPhone = (phone: string): boolean => {
-    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
+    const phoneRegex = /^[+]?[0-9\s\-()]{9,}$/;
     return phoneRegex.test(phone);
   };
 
@@ -386,10 +386,12 @@ export const EstablishmentTab: React.FC<EstablishmentTabProps> = ({
           <SecondaryButton>
             Guardar Cambios
           </SecondaryButton>
-          <SecondaryButton onClick={() => {}}>
-            <Trash2Icon />
-            Eliminar Establecimiento
-          </SecondaryButton>
+          <div className="ml-4">
+            <SecondaryButton onClick={() => {}}>
+              <Trash2Icon />
+              Eliminar Establecimiento
+            </SecondaryButton>
+          </div>
         </div>
       </CardFooter>
     </Card>

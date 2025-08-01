@@ -6,6 +6,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import {
   UserIcon, InfoIcon, MessageIcon, PaletteIcon, LogoutIcon
 } from '../../icons';
+import { useNavigate } from 'react-router-dom';
 
 interface UserSubmenuProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
   const { handleOpenThemeSelector, handleLogout } = useSidebar();
   const { user } = useAuth();
   const iconColors = useIconColors(false);
-
+  const navigate = useNavigate();
   if (!isOpen) return null;
 
   const getPositionClasses = () => {
@@ -29,12 +30,12 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
     }
   };
 
-  const handleThemeClick = () => {
-    handleOpenThemeSelector();
-    onClose();
-  };
 
-  const createMenuItem = (icon: React.ComponentType<any>, label: string, onClick?: () => void) => {
+  function createMenuItem(
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    label: string,
+    onClick?: () => void
+  ) {
     const Icon = icon;
     return (
       <button 
@@ -100,10 +101,10 @@ export const UserSubmenu: React.FC<UserSubmenuProps> = ({ isOpen, onClose, posit
           </div>
         )}
         
-        {createMenuItem(UserIcon, 'Mi cuenta')}
+        {createMenuItem(UserIcon, 'Mi cuenta', () => { navigate('/settings/account?tab=profile'); onClose(); })}
         {createMenuItem(InfoIcon, 'Política de privacidad')}
         {createMenuItem(MessageIcon, 'Enviar comentarios')}
-        {createMenuItem(PaletteIcon, 'Temas', handleThemeClick)}
+        {createMenuItem(PaletteIcon, 'Temas', () => { handleOpenThemeSelector(); onClose(); })}
         {createMenuItem(LogoutIcon, 'Cerrar sesión', () => { handleLogout(); onClose(); })}
       </div>
     </>

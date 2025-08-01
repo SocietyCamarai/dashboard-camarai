@@ -10,6 +10,7 @@ import {
   IntegrationsTab, 
   TaxesTab 
 } from '../../../components/settings';
+import { Header } from '../../../components';
 
 // Interfaces específicas
 interface User {
@@ -300,8 +301,6 @@ export const SettingsAccount: React.FC = () => {
     }
   ]);
 
-
-
   // Leer el parámetro tab de la URL y cambiar la pestaña activa
   useEffect(() => {
     const tabParam = searchParams.get('tab');
@@ -309,10 +308,6 @@ export const SettingsAccount: React.FC = () => {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
-
-
-
-  
 
   // Componentes reutilizables
   const TabPanel: React.FC<{ children: React.ReactNode; isActive: boolean; tabId: string }> = ({ children, isActive, tabId }) => (
@@ -330,12 +325,9 @@ export const SettingsAccount: React.FC = () => {
     </div>
   );
 
-
-
-
-
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 pt-0 md:gap-8 md:p-8 md:pt-0" style={{ backgroundColor: currentTheme.colors.background }}>
+      <Header title={tabs.find(tab => tab.id === activeTab)?.label || 'Configuración'} />
       <div dir="ltr" data-orientation="horizontal" className="w-full">
         <div className="overflow-x-auto pb-2 custom-scrollbar">
           <div 
@@ -437,13 +429,13 @@ export const SettingsAccount: React.FC = () => {
             onUpdateTaxes={setTaxes}
           />
         </TabPanel>
-
         {/* Paneles de otras pestañas (ocultos) */}
+        {/* 
         {tabs.slice(1).map((tab) => (
           <TabPanel key={tab.id} isActive={activeTab === tab.id} tabId={tab.id}>
             <div>Contenido de {tab.label}</div>
           </TabPanel>
-        ))}
+        ))} */}
       </div>
     </main>
   );

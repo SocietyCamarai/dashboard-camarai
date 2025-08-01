@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../../../hooks';
+import { Header } from '../../../components';
 
 // Iconos SVG como componentes funcionales
 const UserIcon = () => (
@@ -47,11 +49,13 @@ const ArrowRightIcon = () => (
 );
 
 export const Settings: React.FC = () => {
+  const { currentTheme } = useTheme();
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 pt-0 md:gap-8 md:p-8 md:pt-0">
+      <Header title="Configuración" />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Link to="/settings/account">
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group border-l-4 border-l-primary">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group border-l-6 border-l-primary" style={{ borderColor: currentTheme.colors.primary }}>
             <div className="flex flex-col space-y-1.5 p-6 flex-grow">
               <div className="text-2xl leading-none tracking-tight font-bold text-muted-foreground flex items-center gap-2">
                 <UserIcon />
@@ -66,7 +70,7 @@ export const Settings: React.FC = () => {
         </Link>
         
         <Link to="/settings/account?tab=devices">
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group border-l-4 border-l-primary">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group border-l-6 border-l-primary" style={{ borderColor: currentTheme.colors.primary }}>
             <div className="flex flex-col space-y-1.5 p-6 flex-grow">
               <div className="text-2xl leading-none tracking-tight font-bold text-muted-foreground flex items-center gap-2">
                 <PrinterIcon />
@@ -80,8 +84,8 @@ export const Settings: React.FC = () => {
           </div>
         </Link>
         
-        <Link to="/settings/taxes">
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group border-l-4 border-l-primary">
+        <Link to="/settings/account?tab=taxes">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group border-l-6 border-l-primary" style={{ borderColor: currentTheme.colors.primary }}>
             <div className="flex flex-col space-y-1.5 p-6 flex-grow">
               <div className="text-2xl leading-none tracking-tight font-bold text-muted-foreground flex items-center gap-2">
                 <PercentIcon />
@@ -95,7 +99,7 @@ export const Settings: React.FC = () => {
           </div>
         </Link>
         
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group cursor-not-allowed opacity-50 border-l-4 border-l-primary">
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group cursor-not-allowed opacity-50 border-l-6 border-l-primary" style={{ borderColor: currentTheme.colors.primary }}>
           <div className="flex flex-col space-y-1.5 p-6 flex-grow">
             <div className="text-2xl leading-none tracking-tight font-bold text-muted-foreground flex items-center gap-2">
               <CreditCardIcon />
@@ -108,7 +112,7 @@ export const Settings: React.FC = () => {
           </div>
         </div>
         
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group cursor-not-allowed opacity-50 border-l-4 border-l-primary">
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:border-primary transition-colors h-full flex flex-col group cursor-not-allowed opacity-50 border-l-6 border-l-primary" style={{ borderColor: currentTheme.colors.primary }}>
           <div className="flex flex-col space-y-1.5 p-6 flex-grow">
             <div className="text-2xl leading-none tracking-tight font-bold text-muted-foreground flex items-center gap-2">
               <BellIcon />
