@@ -27,7 +27,7 @@ interface ProductoModal {
 export default function CategoriasModal({ isOpen, onClose, onCategoriaCreated }: CategoriasModalProps) {
   const { currentTheme } = useTheme();
   const { user } = useAuth();
-  const { productos: productosData, loading: productosLoading } = useProductos(user?.establecimiento_id || 7);
+  const { productos: productosData } = useProductos(user?.establecimiento_id || 7);
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [color, setColor] = useState('#8B5CF6');
@@ -38,6 +38,7 @@ export default function CategoriasModal({ isOpen, onClose, onCategoriaCreated }:
   // Cargar productos cuando se abre el modal o cambian los datos
   useEffect(() => {
     if (isOpen && productosData) {
+      setLoading(true);
       const productosFormateados: ProductoModal[] = productosData.map((producto: any) => ({
         id: producto.id,
         nombre: producto.nombre,
@@ -47,6 +48,7 @@ export default function CategoriasModal({ isOpen, onClose, onCategoriaCreated }:
         productoData: producto
       }));
       setProductos(productosFormateados);
+      setLoading(false);
     }
   }, [isOpen, productosData]);
 
@@ -63,9 +65,11 @@ export default function CategoriasModal({ isOpen, onClose, onCategoriaCreated }:
 
   const agregarProductoSeleccionado = () => {
     if (productoSeleccionado) {
+      setLoading(true);
       const productoId = parseInt(productoSeleccionado);
       toggleProducto(productoId);
       setProductoSeleccionado('');
+      setLoading(false);
     }
   };
 

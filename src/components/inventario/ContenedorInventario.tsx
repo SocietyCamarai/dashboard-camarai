@@ -45,9 +45,9 @@ export default function ContenedorInventario({
   const selectionDropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Función para calcular la posición óptima del dropdown
-  const calculateDropdownPosition = useCallback((buttonElement: HTMLElement, dropdownElement: HTMLElement) => {
+  const calculateDropdownPosition = useCallback((buttonElement: HTMLElement) => { //dropdownElement: HTMLElement
     const buttonRect = buttonElement.getBoundingClientRect();
-    const dropdownRect = dropdownElement.getBoundingClientRect();
+    // const dropdownRect = dropdownElement.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
@@ -158,7 +158,7 @@ export default function ContenedorInventario({
         const buttonElement = document.querySelector(`[data-dropdown]:nth-child(${openDropdown + 1}) button`);
         const dropdownElement = dropdownRefs.current[openDropdown];
         if (buttonElement && dropdownElement) {
-          const position = calculateDropdownPosition(buttonElement as HTMLElement, dropdownElement);
+          const position = calculateDropdownPosition(buttonElement as HTMLElement);//dropdownElement
           setDropdownPosition(prev => ({
             ...prev,
             [openDropdown]: position
@@ -170,7 +170,7 @@ export default function ContenedorInventario({
         const buttonElement = document.querySelector('[data-selection-dropdown] button');
         const dropdownElement = selectionDropdownRef.current;
         if (buttonElement && dropdownElement) {
-          const position = calculateDropdownPosition(buttonElement as HTMLElement, dropdownElement);
+          const position = calculateDropdownPosition(buttonElement as HTMLElement);//dropdownElement
           setSelectionDropdownPosition(position);
         }
       }
@@ -233,7 +233,7 @@ export default function ContenedorInventario({
       setTimeout(() => {
         const dropdownElement = dropdownRefs.current[rowIndex];
         if (buttonElement && dropdownElement) {
-          const position = calculateDropdownPosition(buttonElement, dropdownElement);
+          const position = calculateDropdownPosition(buttonElement);//dropdownElement
           setDropdownPosition(prev => ({
             ...prev,
             [rowIndex]: position
@@ -253,7 +253,7 @@ export default function ContenedorInventario({
       setTimeout(() => {
         const dropdownElement = selectionDropdownRef.current;
         if (buttonElement && dropdownElement) {
-          const position = calculateDropdownPosition(buttonElement, dropdownElement);
+          const position = calculateDropdownPosition(buttonElement);//dropdownElement
           setSelectionDropdownPosition(position);
         }
       }, 10);

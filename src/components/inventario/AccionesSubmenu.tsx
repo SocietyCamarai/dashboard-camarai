@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 
 interface AccionesSubmenuProps {
@@ -80,11 +80,10 @@ export default function AccionesSubmenu({
   const canDelete = selectedItems.length > 0 && showDelete;
 
   return (
-    <div 
+    <div
       ref={submenuRef}
-      className={`fixed z-50 min-w-48 rounded-lg shadow-lg border transition-all duration-200 ${
-        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-      }`}
+      className={`fixed z-50 min-w-48 rounded-lg shadow-lg border transition-all duration-200 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+        }`}
       style={{
         backgroundColor: currentTheme.colors.sidebar,
         borderColor: currentTheme.colors.border,
@@ -95,14 +94,14 @@ export default function AccionesSubmenu({
       }}
     >
       {/* Header con contador */}
-      <div 
+      <div
         className="px-3 py-2 border-b text-xs font-medium"
-        style={{ 
+        style={{
           borderColor: currentTheme.colors.border,
-          color: currentTheme.colors.textSecondary 
+          color: currentTheme.colors.textSecondary
         }}
       >
-        {selectedItems.length === 1 
+        {selectedItems.length === 1
           ? '1 elemento seleccionado'
           : `${selectedItems.length} elementos seleccionados`
         }
@@ -115,11 +114,10 @@ export default function AccionesSubmenu({
           <button
             onClick={handleEdit}
             disabled={!canEdit}
-            className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors ${
-              canEdit 
-                ? 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
+            className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors ${canEdit
+                ? 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                 : 'opacity-50 cursor-not-allowed'
-            }`}
+              }`}
             style={{
               color: canEdit ? undefined : currentTheme.colors.textSecondary
             }}
@@ -136,11 +134,10 @@ export default function AccionesSubmenu({
           <button
             onClick={handleDelete}
             disabled={!canDelete}
-            className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors ${
-              canDelete 
-                ? 'hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400' 
+            className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors ${canDelete
+                ? 'hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400'
                 : 'opacity-50 cursor-not-allowed'
-            }`}
+              }`}
             style={{
               color: canDelete ? undefined : currentTheme.colors.textSecondary
             }}

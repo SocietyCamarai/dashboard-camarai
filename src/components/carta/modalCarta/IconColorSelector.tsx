@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
-import { 
-  UtensilsIcon, 
-  MicIcon, 
-  CoffeeIcon, 
-  TrashIcon, 
-  SunIcon, 
+import {
+  UtensilsIcon,
+  MicIcon,
+  CoffeeIcon,
+  TrashIcon,
+  SunIcon,
   SmartphoneIcon,
 } from '../../icons';
-import type { Carta } from '../../../types/components';
+import type { ICarta } from '../../../types/database.types';
 
 interface IconColorSelectorProps {
-  carta: Carta | null;
+  carta: ICarta | null;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (carta: Carta) => void;
+  onSave: (carta: ICarta) => void;
   buttonRef?: React.RefObject<HTMLButtonElement>;
 }
 
@@ -58,16 +58,16 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
     if (!buttonRef?.current || !isOpen) {
       return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
     }
-    
+
     const buttonRect = buttonRef.current.getBoundingClientRect();
     const modalWidth = 320; // max-w-sm equivalent
     const modalHeight = 250; // more realistic height
     const viewportHeight = window.innerHeight;
     const threshold65Percent = viewportHeight * 0.65;
-    
+
     let top = buttonRect.bottom + 8; // 8px gap below button
     let left = buttonRect.left;
-    
+
     // Adjust horizontal position if modal would go off screen
     if (left + modalWidth > window.innerWidth) {
       left = window.innerWidth - modalWidth - 16;
@@ -75,19 +75,19 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
     if (left < 16) {
       left = 16;
     }
-    
+
     // Improved vertical positioning logic
     // If button is below 65% of viewport height OR modal would go below viewport
     if (buttonRect.top > threshold65Percent || top + modalHeight > viewportHeight - 16) {
       // Show above button with proper spacing
       top = buttonRect.top - modalHeight - 8;
-      
+
       // Ensure modal doesn't go above viewport
       if (top < 16) {
         top = 16;
       }
     }
-    
+
     return { top: `${top}px`, left: `${left}px` };
   }, [buttonRef, isOpen]);
 
@@ -96,7 +96,7 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
   const handleIconChange = (nuevoIcono: string) => {
     setIconoSeleccionado(nuevoIcono);
     if (carta) {
-      const cartaActualizada: Carta = {
+      const cartaActualizada: ICarta = {
         ...carta,
         icono: nuevoIcono,
         colorBorde: colorSeleccionado
@@ -108,7 +108,7 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
   const handleColorChange = (nuevoColor: string) => {
     setColorSeleccionado(nuevoColor);
     if (carta) {
-      const cartaActualizada: Carta = {
+      const cartaActualizada: ICarta = {
         ...carta,
         icono: iconoSeleccionado,
         colorBorde: nuevoColor
@@ -124,14 +124,14 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
       onClick={handleBackdropClick}
     >
-      <div 
+      <div
         className="absolute bg-white rounded-lg shadow-xl w-80 p-5"
-        style={{ 
+        style={{
           backgroundColor: currentTheme.colors.sidebar,
           ...modalPosition
         }}
@@ -162,19 +162,18 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
                 <button
                   key={icono.id}
                   onClick={() => handleIconChange(icono.id)}
-                  className={`p-2 rounded border flex items-center justify-center ${
-                    isSelected ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
-                  }`}
+                  className={`p-2 rounded border flex items-center justify-center ${isSelected ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
+                    }`}
                   style={{
                     borderColor: isSelected ? currentTheme.colors.primary : currentTheme.colors.border,
                     backgroundColor: isSelected ? currentTheme.colors.primary : 'transparent'
-                    
+
                   }}
                 >
-                  <IconComponent 
-                    size={16} 
-                    style={{  
-                        color:  isSelected ? currentTheme.colors.sidebar  : currentTheme.colors.text
+                  <IconComponent
+                    size={16}
+                    style={{
+                      color: isSelected ? currentTheme.colors.sidebar : currentTheme.colors.text
 
                     }}
                   />
@@ -196,7 +195,7 @@ const IconColorSelector: React.FC<IconColorSelectorProps> = ({
                   key={color.id}
                   onClick={() => handleColorChange(color.color)}
                   className="w-8 h-8 rounded-full"
-                  style={{ 
+                  style={{
                     backgroundColor: color.color,
                     border: isSelected ? `2px solid ${currentTheme.colors.primary}` : 'none'
                   }}

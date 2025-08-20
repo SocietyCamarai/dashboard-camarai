@@ -22,11 +22,11 @@ interface ProductoDisplay {
 const Productos: React.FC = () => {
   const { currentTheme } = useTheme();
   const { user } = useAuth();
-  const { productos: productosData, loading: productosLoading } = useProductos(user?.establecimiento_id || 7);
-  const { categorias: categoriasData, loading: categoriasLoading } = useCategorias(user?.establecimiento_id || 7);
+  const { productos: productosData } = useProductos(user?.establecimiento_id || 7); //, loading: productosLoading 
+  const { categorias: categoriasData } = useCategorias(user?.establecimiento_id || 7); //, loading: categoriasLoading
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [productos, setProductos] = useState<IProducto[]>([]);
-  const [categorias, setCategorias] = useState<ICategoria[]>([]);
+  // const [productos, setProductos] = useState<IProducto[]>([]); // Variable no utilizada
+  // const [categorias, setCategorias] = useState<ICategoria[]>([]);
   const [loading, setLoading] = useState(true);
   const [inventarioData, setInventarioData] = useState<ProductoDisplay[]>([]);
 
@@ -43,8 +43,8 @@ const Productos: React.FC = () => {
 
   useEffect(() => {
     if (productosData && categoriasData) {
-      setProductos(productosData);
-      setCategorias(categoriasData);
+      // setProductos(productosData); // Ya no se usa el estado local
+      // setCategorias(categoriasData);
 
       // Procesar datos para mostrar en la tabla
       const processedData = productosData.map((producto: any) => {
@@ -70,18 +70,18 @@ const Productos: React.FC = () => {
   }, [productosData, categoriasData]);
 
   const handleProductoCreated = (nuevoProducto: IProducto) => {
-    setProductos(prev => [...prev, nuevoProducto]);
+    // setProductos(prev => [...prev, nuevoProducto]); // Ya no se usa el estado local
 
     // Actualizar inventarioData
-    const categoria = categorias.find(cat => cat.identificador === nuevoProducto.categoria_id);
+    const categoria = categoriasData.find((cat: ICategoria) => cat.identificador === nuevoProducto.categoria_id);
     const costoEscandallo = 0;
-    const margen = nuevoProducto.precio - costoEscandallo;
+    const margen = Number(nuevoProducto.precio) - costoEscandallo;
 
     const nuevoProductoDisplay: ProductoDisplay = {
       producto: nuevoProducto.nombre,
       imagen: nuevoProducto.imagen || 'https://images.unsplash.com/photo-1549888834-3ec93abae044?w=100&h=100&fit=crop&crop=center',
       categoria: categoria?.nombre || 'Sin categoría',
-      precioVenta: `€${nuevoProducto.precio.toFixed(2)}`,
+      precioVenta: `€${Number(nuevoProducto.precio).toFixed(2)}`,
       costoEscandallo: `€${costoEscandallo.toFixed(2)}`,
       margen: `€${margen.toFixed(2)}`,
       impuesto: nuevoProducto.impuesto ? `IVA ${nuevoProducto.impuesto}%` : 'Sin impuesto',
@@ -124,7 +124,7 @@ const Productos: React.FC = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onProductoCreated={handleProductoCreated}
-          categorias={categorias}
+          categorias={categoriasData}
         />
       </div>
     </div>

@@ -69,7 +69,7 @@ const Table: React.FC<TableProps> = ({
   title = "Comandas Recientes"
 }) => {
   const { user } = useAuth();
-  const { mesas, loading: mesasLoading } = useMesas(user?.establecimiento_id || 1);
+  const { mesas } = useMesas(user?.establecimiento_id || 1);
 
   // Usar datos de mockups si no se proporcionan datos
   const tableData = useMemo(() => {
