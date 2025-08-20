@@ -23,7 +23,8 @@ export const TaxesTab: React.FC<TaxesTabProps> = ({ taxes, onUpdateTaxes }) => {
   });
 
   // Manejar acciones de impuestos
-  const handleTaxAction = (_taxId: number) => {
+  const handleTaxAction = (taxId: number) => {
+    console.log(`Tax action for: ${taxId}`);
     // Aquí se implementaría la lógica para las acciones de impuestos
   };
 
@@ -38,7 +39,7 @@ export const TaxesTab: React.FC<TaxesTabProps> = ({ taxes, onUpdateTaxes }) => {
   const isValidPercentage = (percentage: string): boolean => {
     const percentageRegex = /^[0-9]+(\.[0-9]+)?%?$/;
     if (!percentageRegex.test(percentage)) return false;
-    
+
     const numValue = parseFloat(percentage.replace('%', ''));
     return numValue >= 0 && numValue <= 100;
   };
@@ -101,10 +102,10 @@ export const TaxesTab: React.FC<TaxesTabProps> = ({ taxes, onUpdateTaxes }) => {
                   <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0" style={{ color: currentTheme.colors.text }}>{tax.percentage}</td>
                   <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0 text-right">
                     <button
-                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 w-10" 
+                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 w-10"
                       type="button"
-                      aria-haspopup="menu" 
-                      aria-expanded="false" 
+                      aria-haspopup="menu"
+                      aria-expanded="false"
                       data-state="closed"
                       onClick={() => handleTaxAction(tax.id)}
                       style={{ color: currentTheme.colors.textSecondary }}

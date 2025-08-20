@@ -1,18 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { EditIcon, CheckIcon, XIcon } from '../icons';
-import type { Mesa } from '../../types/components';
+import type { Mesa } from '../../types/compatibility.types';
 
 interface TablaMesasProps {
   mesas: Mesa[];
-  onActualizarMesa: (id: string, cambios: Partial<Mesa>) => void;
-  onEliminarMesa: (id: string) => void;
-  onSeleccionarMesa: (id: string) => void;
-  mesaSeleccionada: string | null;
+  onActualizarMesa: (id: number, cambios: Partial<Mesa>) => void;
+  onEliminarMesa: (id: number) => void;
+  onSeleccionarMesa: (id: number) => void;
+  mesaSeleccionada: number | null;
 }
 
 interface MesaEditando {
-  id: string;
+  id: number;
   campo: 'nombre' | 'personas';
   valor: string | number;
 }
@@ -27,7 +27,7 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
   const { currentTheme } = useTheme();
   const [mesaEditando, setMesaEditando] = useState<MesaEditando | null>(null);
 
-  const handleEditar = useCallback((id: string, campo: 'nombre' | 'personas', valor: string | number) => {
+  const handleEditar = useCallback((id: number, campo: 'nombre' | 'personas', valor: string | number) => {
     setMesaEditando({ id, campo, valor });
   }, []);
 
@@ -106,7 +106,7 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
       <div className="flex items-center gap-1">
         <span>{mesa[campo]}</span>
         <button
-          onClick={() => handleEditar(mesa.id, campo, mesa[campo])}
+          onClick={() => handleEditar(mesa.id, campo, mesa[campo] || '')}
           className="p-1 text-gray-500 hover:text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity"
           title={`Editar ${campo}`}
         >
@@ -118,51 +118,51 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
 
   return (
     <div className="mt-6">
-      <h3 
+      <h3
         className="text-lg font-semibold mb-4"
         style={{ color: currentTheme.colors.text }}
       >
         Mesas del Ambiente ({mesas.length})
       </h3>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr 
+            <tr
               className="border-b"
               style={{ borderColor: currentTheme.colors.border }}
             >
-              <th 
+              <th
                 className="text-left py-3 px-4 font-medium"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
                 Mesa
               </th>
-              <th 
+              <th
                 className="text-left py-3 px-4 font-medium"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
                 Nombre
               </th>
-              <th 
+              <th
                 className="text-left py-3 px-4 font-medium"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
                 Personas
               </th>
-              <th 
+              <th
                 className="text-left py-3 px-4 font-medium"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
                 Posición
               </th>
-              <th 
+              <th
                 className="text-left py-3 px-4 font-medium"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
                 Tamaño
               </th>
-              <th 
+              <th
                 className="text-left py-3 px-4 font-medium"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
@@ -174,10 +174,9 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
             {mesas.map((mesa) => (
               <tr
                 key={mesa.id}
-                className={`group border-b hover:bg-opacity-50 transition-colors ${
-                  mesaSeleccionada === mesa.id ? 'bg-primary/10' : ''
-                }`}
-                style={{ 
+                className={`group border-b hover:bg-opacity-50 transition-colors ${mesaSeleccionada === mesa.id ? 'bg-primary/10' : ''
+                  }`}
+                style={{
                   borderColor: currentTheme.colors.border + '30',
                   backgroundColor: mesaSeleccionada === mesa.id ? currentTheme.colors.primary + '10' : 'transparent'
                 }}
@@ -185,7 +184,7 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
               >
                 <td className="py-3 px-4">
                   <span style={{ color: currentTheme.colors.text }}>
-                    {mesa.id.split('-').pop()}
+                    {mesa.id}
                   </span>
                 </td>
                 <td className="py-3 px-4">
@@ -196,7 +195,7 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
                 </td>
                 <td className="py-3 px-4">
                   <span style={{ color: currentTheme.colors.textSecondary }}>
-                    ({Math.round(mesa.x)}, {Math.round(mesa.y)})
+                    ({Math.round(mesa.x || 0)}, {Math.round(mesa.y || 0)})
                   </span>
                 </td>
                 <td className="py-3 px-4">
@@ -221,9 +220,9 @@ export const TablaMesas: React.FC<TablaMesasProps> = ({
           </tbody>
         </table>
       </div>
-      
+
       {mesas.length === 0 && (
-        <div 
+        <div
           className="text-center py-8 text-muted-foreground"
           style={{ color: currentTheme.colors.textSecondary }}
         >

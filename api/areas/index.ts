@@ -1,0 +1,67 @@
+import axios from 'axios';
+
+const BACKEND_URL = process.env.BACKEND_URL;
+
+interface AreaRequest {
+    action: string;
+    data: {
+        establecimiento_id?: number;
+        nombre?: string;
+        descripcion?: string;
+        id?: number;
+        status?: boolean;
+    };
+}
+
+interface AreaResponse {
+    message?: string;
+    id?: number;
+    establecimiento_id?: number;
+    nombre?: string;
+    descripcion?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
+function isAxiosError(error: unknown): error is { response?: { status: number; data: unknown }; message: string } {
+    return typeof error === 'object' && error !== null && 'message' in error;
+}
+
+export default async function handler(req: any, res: any) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method Not Allowed' });
+    }
+
+    const { action, data } = req.body as AreaRequest;
+
+    if (!action) {
+        return res.status(400).json({ error: 'Action es requerida' });
+    }
+
+    // Validar acciones permitidas
+    const allowedActions = ['insert-area', 'get-areas', 'update-area', 'delete-area'];
+    if (!allowedActions.includes(action)) {
+        return res.status(400).json({ error: 'Action no válida' });
+    }
+
+    try {
+        const response = await axios.post<AreaResponse>(`${BACKEND_URL}/areas`, { action, data }, {
+            headers: {
+                'Authorization': req.headers.authorization,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return res.status(response.status).json(response.data);
+    } catch (error: unknown) {
+        if (isAxiosError(error) && error.response) {
+            return res.status(error.response.status).json(error.response.data);
+        }
+
+        console.error('Error en areas:', error);
+        return res.status(500).json({
+            error: 'Error interno del servidor',
+            details: isAxiosError(error) ? error.message : 'Unknown error'
+        });
+    }
+}

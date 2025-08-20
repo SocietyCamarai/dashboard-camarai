@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
-import type { HeaderProps } from '../../types/components';
+import type { HeaderProps } from '../../types/compatibility.types';
 
 const Header: React.FC<HeaderProps> = ({ title, className, rounded = true }) => {
   const { currentTheme } = useTheme();

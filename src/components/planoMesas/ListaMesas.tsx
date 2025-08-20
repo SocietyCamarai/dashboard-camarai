@@ -1,15 +1,15 @@
 import React from 'react';
 import { Mesa } from './Mesa';
-import type { AmbientePlano } from '../../types/components';
+import type { AmbientePlano } from '../../types/compatibility.types';
 
 interface ListaMesasProps {
   ambiente: AmbientePlano;
-  mesaSeleccionada: string | null;
-  onMesaMover: (id: string, x: number, y: number) => void;
-  onMesaRedimensionar: (id: string, width: number, height: number) => void;
-  onMesaEliminar: (id: string) => void;
-  onMesaGenerarQR: (id: string) => void;
-  onMesaSeleccionar: (id: string) => void;
+  mesaSeleccionada: number | null;
+  onMesaMover: (id: number, x: number, y: number) => void;
+  onMesaRedimensionar: (id: number, width: number, height: number) => void;
+  onMesaEliminar: (id: number) => void;
+  onMesaGenerarQR: (id: number) => void;
+  onMesaSeleccionar: (id: number | null) => void;
 }
 
 export const ListaMesas: React.FC<ListaMesasProps> = ({

@@ -3,7 +3,7 @@ import React from 'react';
 const KDS: React.FC = () => (
   <div className="flex flex-col items-center justify-center h-full">
     <h1 className="text-2xl font-bold mb-2">KDS</h1>
-    <p className="text-gray-500">Esta es la página de KDS.</p>
+    <p className="text-gray-500">Esta es la página de KDS. (NO CONTAMOS CON EL DISEÑO DE ESTA VISTA)</p>
   </div>
 );
 

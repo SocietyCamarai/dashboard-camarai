@@ -23,8 +23,8 @@ export const IntegrationsTab: React.FC<IntegrationsTabProps> = ({ integrations, 
   // Manejar toggle de integraciones
   const handleIntegrationToggle = (integrationId: number) => {
     onUpdateIntegrations(
-      integrations.map(integration => 
-        integration.id === integrationId 
+      integrations.map(integration =>
+        integration.id === integrationId
           ? { ...integration, isActive: !integration.isActive }
           : integration
       )
@@ -72,7 +72,8 @@ export const IntegrationsTab: React.FC<IntegrationsTabProps> = ({ integrations, 
   };
 
   // Manejar configuración de integración
-  const handleConfigureIntegration = (_integrationId: number) => {
+  const handleConfigureIntegration = (integrationId: number) => {
+    console.log(`Configuring integration: ${integrationId}`);
     // Aquí se implementaría la lógica para configurar una integración
   };
 
@@ -95,12 +96,12 @@ export const IntegrationsTab: React.FC<IntegrationsTabProps> = ({ integrations, 
                 onToggle={() => handleIntegrationToggle(integration.id)}
                 size="sm"
               />
-              <button 
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-8 w-8" 
-                type="button" 
-                aria-haspopup="menu" 
-                aria-expanded="false" 
-                data-state="closed" 
+              <button
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-8 w-8"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                data-state="closed"
                 style={{ color: currentTheme.colors.textSecondary }}
                 onClick={() => handleConfigureIntegration(integration.id)}
               >

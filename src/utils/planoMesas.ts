@@ -1,4 +1,4 @@
-import type { CalculoPersonas, PosicionMesa, DimensionesMesa } from '../types/components';
+import type { CalculoPersonas, PosicionMesa, DimensionesMesa } from '../types/compatibility.types';
 
 // Constantes para el tamaño máximo de mesa
 const MAX_MESA_WIDTH = 640; // 5 veces el ancho mínimo (128 * 5)
@@ -14,12 +14,12 @@ const CANVAS_HEIGHT = 600;
  */
 export function calcularPersonas(width: number, height: number): CalculoPersonas {
   const area = width * height;
-  
+
   // Nueva fórmula: 128x100 = 12800 píxeles cuadrados = 1 persona
   // Cada 12800 píxeles cuadrados adicionales = 1 persona extra
   const areaPorPersona = 128 * 100; // 12800 píxeles cuadrados
   const personas = Math.max(1, Math.round(area / areaPorPersona));
-  
+
   return {
     area,
     personas
@@ -43,7 +43,7 @@ export function generarPosicionAleatoria(
   const padding = 20;
   const maxX = canvasWidth - mesaWidth - padding;
   const maxY = canvasHeight - mesaHeight - padding;
-  
+
   return {
     x: Math.max(padding, Math.random() * maxX),
     y: Math.max(padding, Math.random() * maxY)

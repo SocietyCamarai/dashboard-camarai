@@ -1,6 +1,40 @@
 {
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/[^.]+", "dest": "/" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/api/areas/(.*)",
+      "dest": "/api/areas/$1"
+    },
+    {
+      "src": "/api/empresas/(.*)",
+      "dest": "/api/empresas/$1"
+    },
+    {
+      "src": "/api/establecimientos/(.*)",
+      "dest": "/api/establecimientos/$1"
+    },
+    {
+      "src": "/api/categorias/(.*)",
+      "dest": "/api/categorias/$1"
+    },
+    {
+      "src": "/api/productos/(.*)",
+      "dest": "/api/productos/$1"
+    },
+    {
+      "src": "/api/mesas/(.*)",
+      "dest": "/api/mesas/$1"
+    },
+    {
+      "src": "/api/proveedores/(.*)",
+      "dest": "/api/proveedores/$1"
+    },
+    {
+      "src": "/[^.]+",
+      "dest": "/"
+    }
   ]
 }

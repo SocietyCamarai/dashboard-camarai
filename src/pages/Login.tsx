@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useRedirect } from '../context/useRedirect';
+// import { useRedirect } from '../hooks/useRedirect';
 import { useTheme } from '../hooks/useTheme';
 import '../assets/styles/login.css';
-
+// import '../styles/login.css';
 const logoGif = '/login/loading_v3.gif';
 const googleIcon = 'https://cdn.iconscout.com/icon/free/png-256/free-google-icon-download-in-svg-png-gif-file-formats--logo-social-media-1507807.png';
 const microsoftIcon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png';
@@ -15,7 +15,7 @@ const AHole: React.FC<React.HTMLAttributes<HTMLElement>> = ({ children, ...props
 
 const Login: React.FC = () => {
   const { login, register, isLoading } = useAuth();
-  const { handleRedirect } = useRedirect();
+  // const { handleRedirect } = useRedirect();
   const { currentTheme, isDarkTheme } = useTheme();
   const [tab, setTab] = useState<'login' | 'register'>('login');
   const [loginEmail, setLoginEmail] = useState('');
@@ -38,10 +38,10 @@ const Login: React.FC = () => {
     setError('');
     try {
       await login(loginEmail, loginPassword);
-      handleRedirect('LOGIN_SUCCESS');
+      // handleRedirect('LOGIN_SUCCESS');
     } catch (err) {
       if (err instanceof Error && err.message === 'usuario-inactivo') {
-        handleRedirect('ONBOARDING_REQUIRED');
+        // handleRedirect('ONBOARDING_REQUIRED');
         // No mostrar mensaje de error
       } else {
         setError('Pasaporte denegado. Revisa tus credenciales.');
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
       // El login automático tras registro ya redirige
     } catch (error) {
       if (error instanceof Error && error.message === 'usuario-inactivo') {
-        handleRedirect('ONBOARDING_REQUIRED');
+        // handleRedirect('ONBOARDING_REQUIRED');
       } else {
         setRegisterError(error instanceof Error ? error.message : 'Error en el registro');
       }
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen w-full flex items-center justify-center bg-black"
+      className="h-[100dvh] w-full flex items-center justify-center bg-black overflow-y-hidden"
       style={{ color: textColor }}
     >
       <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
@@ -95,22 +95,28 @@ const Login: React.FC = () => {
           <div className="aura"></div>
         </AHole>
       </div>
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center w-full max-w-[90vw]">
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center w-full max-w-[90vw] h-full">
         <div className="hidden md:flex items-center justify-center pr-8">
-          <div className="rounded-3xl shadow-2xl bg-gray-900 w-[360px] h-[700px] flex items-center justify-center">
+          <div
+            className="rounded-3xl shadow-2xl w-[min(360px,40vw)] h-[min(700px,80vh)] max-w-[360px] max-h-[700px] flex items-center justify-center"
+            style={{
+              backgroundColor: currentTheme.colors.sidebar,
+              aspectRatio: '360/700'
+            }}
+          >
             <div className="w-full h-full rounded-2xl bg-cover bg-center" style={{ backgroundImage: "url('https://framerusercontent.com/images/77EciliJVU8turb59IhflF0Maug.png?scale-down-to=2048')" }}></div>
           </div>
         </div>
         <div
-          className="w-full max-w-sm h-[90vh] md:h-[600px] max-h-[80vh] rounded-xl shadow-xl flex flex-col"
+          className="w-full max-w-sm h-auto md:h-[min(700px,80vh)] rounded-2xl shadow-xl flex flex-col overflow-hidden"
           style={{ background: cardBg, borderLeft: `5px solid ${borderColor}`, fontSize: '90%' }}
         >
           {/* Header fijo: Logo + Tabs */}
-          <div className="flex flex-col items-center pt-8 min-h-[120px] py-6">
-            <img src={logoGif} alt="CamarAI Logo" className="h-24 w-auto mb-2 -mt-3" />
-            <div className="flex w-full border-b-2" style={{ borderColor: currentTheme.colors.textSecondary }}>
+          <div className="flex flex-col items-center pt-6 pb-4 flex-shrink-0">
+            <img src={logoGif} alt="CamarAI Logo" className="h-20 w-auto mb-2" />
+            <div className="flex w-full border-b-2 px-6" style={{ borderColor: currentTheme.colors.textSecondary }}>
               <button
-                className={`flex-1 text-lg font-semibold transition-all ${tab === 'login' ? 'border-b-2' : ''}`}
+                className={`flex-1 text-base font-semibold transition-all py-2 ${tab === 'login' ? 'border-b-2' : ''}`}
                 style={{
                   borderColor: tab === 'login' ? borderColor : 'transparent',
                   color: tab === 'login' ? borderColor : currentTheme.colors.textSecondary,
@@ -125,7 +131,7 @@ const Login: React.FC = () => {
                 Iniciar Sesión
               </button>
               <button
-                className={`flex-1 text-lg font-semibold transition-all ${tab === 'register' ? 'border-b-2' : ''}`}
+                className={`flex-1 text-base font-semibold transition-all py-2 ${tab === 'register' ? 'border-b-2' : ''}`}
                 style={{
                   borderColor: tab === 'register' ? borderColor : 'transparent',
                   color: tab === 'register' ? borderColor : currentTheme.colors.textSecondary,
@@ -142,7 +148,7 @@ const Login: React.FC = () => {
             </div>
           </div>
           {/* Área scrolleable: solo inputs */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-6 custom-input-scrollbar pb-6">
+          <div className="flex-1 overflow-y-auto px-6 my-6 custom-input-scrollbar">
             {tab === 'login' && (
               <form className="flex flex-col w-full" id="login-form" onSubmit={handleLogin}>
                 <div className="w-full space-y-4">
@@ -176,7 +182,7 @@ const Login: React.FC = () => {
                   <div className="text-sm text-center" style={{ color: currentTheme.colors.textSecondary }}>
                     <b>Demo:<br /></b> MAIL: testuser1@example.com<br />PASS: supersecretpassword123
                   </div>
-                  {error && <div className="text-red-500 text-center text-sm mt-2">{error}</div>}
+                  {error && <div className="text-center text-sm mt-2" style={{ color: currentTheme.colors.error }}>{error}</div>}
                 </div>
               </form>
             )}
@@ -259,7 +265,7 @@ const Login: React.FC = () => {
                       onChange={e => setRegisterConfirmPassword(e.target.value)}
                     />
                   </div>
-                  {registerError && <div className="text-red-500 text-center text-sm mt-2">{registerError}</div>}
+                  {registerError && <div className="text-center text-sm mt-2" style={{ color: currentTheme.colors.error }}>{registerError}</div>}
                 </div>
               </form>
             )}
@@ -315,4 +321,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login; 
+export default Login;

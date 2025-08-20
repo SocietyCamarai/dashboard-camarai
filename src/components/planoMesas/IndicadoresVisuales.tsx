@@ -4,7 +4,7 @@ import { useTheme } from '../../hooks/useTheme';
 interface IndicadoresVisualesProps {
   isDragging: boolean;
   isResizing: boolean;
-  mesaSeleccionada: string | null;
+  mesaSeleccionada: number | null;
   totalMesas: number;
 }
 
@@ -22,7 +22,7 @@ export const IndicadoresVisuales: React.FC<IndicadoresVisualesProps> = ({
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <div 
+      <div
         className="px-4 py-2 rounded-lg shadow-lg text-sm font-medium"
         style={{
           backgroundColor: currentTheme.colors.background,
@@ -36,21 +36,21 @@ export const IndicadoresVisuales: React.FC<IndicadoresVisualesProps> = ({
             <span>Arrastrando mesa...</span>
           </div>
         )}
-        
+
         {isResizing && (
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span>Redimensionando mesa...</span>
           </div>
         )}
-        
+
         {mesaSeleccionada && !isDragging && !isResizing && (
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
             <span>Mesa seleccionada</span>
           </div>
         )}
-        
+
         <div className="text-xs mt-1 opacity-70">
           Total: {totalMesas} mesas
         </div>

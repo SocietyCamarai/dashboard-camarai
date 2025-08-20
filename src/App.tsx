@@ -10,6 +10,13 @@ import { Home, Comandas, Ambientes, PlanoMesas, Promociones, KDS, SettingsAccoun
 import Login from './pages/Login';
 import Onboarding from './pages/Onboarding';
 import { useAuth } from './hooks/useAuth';
+import Personal from './pages/Personal';
+import Carta from './pages/Carta';
+import GestionarCarta from './pages/GestionarCarta';
+import Categorias from './pages/Categorias';
+import Productos from './pages/Productos';
+import Ingredientes from './pages/Ingredientes';
+import Inventario from './pages/Inventario';
 
 function DashboardRoutes() {
   // Extraer la sección de la URL: /dashboard/:section
@@ -31,25 +38,25 @@ function DashboardRoutes() {
       content = <PlanoMesas />;
       break;
     case 'carta':
-      content = <div className="p-6"><h1 className="text-2xl font-bold">Carta</h1><p>Página en desarrollo...</p></div>;
+      content = <Carta />;
       break;
     case 'categorias':
-      content = <div className="p-6"><h1 className="text-2xl font-bold">Categorías</h1><p>Página en desarrollo...</p></div>;
+      content = <Categorias />;
       break;
     case 'productos':
-      content = <div className="p-6"><h1 className="text-2xl font-bold">Productos</h1><p>Página en desarrollo...</p></div>;
+      content = <Productos />;
       break;
     case 'ingredientes':
-      content = <div className="p-6"><h1 className="text-2xl font-bold">Ingredientes</h1><p>Página en desarrollo...</p></div>;
+      content = <Ingredientes />;
       break;
     case 'personal':
-      content = <div className="p-6"><h1 className="text-2xl font-bold">Personal</h1><p>Página en desarrollo...</p></div>;
+      content = <Personal />;
       break;
     case 'reportes':
       content = <div className="p-6"><h1 className="text-2xl font-bold">Reportes</h1><p>Página en desarrollo...</p></div>;
       break;
     case 'inventario':
-      content = <div className="p-6"><h1 className="text-2xl font-bold">Inventario</h1><p>Página en desarrollo...</p></div>;
+      content = <Inventario />;
       break;
     case 'reservas':
       content = <div className="p-6"><h1 className="text-2xl font-bold">Reservas</h1><p>Página en desarrollo...</p></div>;
@@ -121,12 +128,13 @@ function AppContent() {
       {/* Rutas protegidas */}
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard/home" element={<DashboardRoutes />} />
+        <Route path="/dashboard/carta/:cartaId/edit" element={<Layout currentPage="carta"><GestionarCarta /></Layout>} />
         <Route path="/dashboard/:section" element={<DashboardRoutes />} />
         <Route path="/dashboard" element={<Navigate to="/dashboard/home" replace />} />
         <Route path="/settings/main" element={<SettingsRoutes />} />
         <Route path="/settings/:section" element={<SettingsRoutes />} />
         <Route path="/settings" element={<Navigate to="/settings/main" replace />} />
-        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />e 
+        <Route path="/" element={<Navigate to="/dashboard/home" replace />} />e
       </Route>
 
       {/* Catch-all */}

@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { 
-  loginRequest, 
-  registerRequest, 
-  logoutRequest, 
+import {
+  loginRequest,
+  registerRequest,
+  logoutRequest,
   refreshTokenRequest,
   validateTokenRequest,
   type User,
@@ -127,14 +127,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isLoading, 
-      isAuthenticated, 
+    <AuthContext.Provider value={{
+      user,
+      isLoading,
+      isAuthenticated,
       needsOnboarding,
-      login, 
-      register, 
-      logout, 
+      login,
+      register,
+      logout,
       refreshAuth,
       updateUserState
     }}>

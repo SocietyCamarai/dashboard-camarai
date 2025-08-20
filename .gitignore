@@ -29,3 +29,9 @@ dist-ssr
 
 # Environment variables
 .env
+
+# Archivos y carpetas usados para pruebas/desarrollo
+bakend-REFERENCIA-AGREGAR-NUEVAS-LLAMADAS
+bbdd-data_inmutable(NOEDITAR)
+scripts
+bbdd-inmutable(NOEDITAR).sql

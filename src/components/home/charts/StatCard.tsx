@@ -13,7 +13,7 @@ const StatCard: React.FC<StatCardProps> = ({
 
   // Use sidebar background for dark mode, regular background for light mode
   const cardBackground = isDarkTheme(currentTheme) 
-    ? currentTheme.colors.sidebar 
+    ? currentTheme.colors.background 
     : currentTheme.colors.background;
 
   return (

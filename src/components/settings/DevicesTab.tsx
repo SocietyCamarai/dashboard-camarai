@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { SwitchToggle } from '../SwitchToggle';
-import { 
-  MonitorIcon, 
-  WifiIcon, 
-  CableIcon, 
-  EllipsisVerticalIcon, 
-  CirclePlusIcon 
+import {
+  MonitorIcon,
+  WifiIcon,
+  CableIcon,
+  EllipsisVerticalIcon,
+  CirclePlusIcon
 } from '../icons';
 
 interface Device {
@@ -32,7 +32,7 @@ interface DevicesTabProps {
 // Componentes reutilizables
 const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => {
   const { currentTheme, isDarkTheme } = useTheme();
-  
+
   const getCardColors = () => {
     if (isDarkTheme(currentTheme)) {
       return {
@@ -57,7 +57,7 @@ const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
 
 const CardHeader: React.FC<{ title: string; subtitle: string; icon: React.ComponentType<{ style?: React.CSSProperties }> }> = ({ title, subtitle, icon: Icon }) => {
   const { currentTheme } = useTheme();
-  
+
   return (
     <div className="flex flex-col space-y-1.5 p-6">
       <div className="flex items-center gap-4">
@@ -77,13 +77,13 @@ const CardContent: React.FC<{ children: React.ReactNode; className?: string }> =
   </div>
 );
 
-const SecondaryButton: React.FC<{ children: React.ReactNode; onClick?: () => void; className?: string }> = ({ 
-  children, 
-  onClick, 
-  className = "" 
+const SecondaryButton: React.FC<{ children: React.ReactNode; onClick?: () => void; className?: string }> = ({
+  children,
+  onClick,
+  className = ""
 }) => {
   const { currentTheme, isDarkTheme } = useTheme();
-  
+
   const getInputColors = () => {
     if (isDarkTheme(currentTheme)) {
       return {
@@ -171,8 +171,8 @@ export const DevicesTab: React.FC<DevicesTabProps> = ({ devices, onUpdateDevices
   const handleDeviceToggle = (category: keyof Devices, deviceId: number) => {
     const updatedDevices = {
       ...devices,
-      [category]: devices[category].map(device => 
-        device.id === deviceId 
+      [category]: devices[category].map(device =>
+        device.id === deviceId
           ? { ...device, isActive: !device.isActive }
           : device
       )
@@ -181,7 +181,8 @@ export const DevicesTab: React.FC<DevicesTabProps> = ({ devices, onUpdateDevices
   };
 
   // Manejar añadir dispositivo
-  const handleAddDevice = (_category: keyof Devices) => {
+  const handleAddDevice = (category: keyof Devices) => {
+    console.log(`Adding device to category: ${category}`);
     // Aquí se implementaría la lógica para añadir dispositivo
   };
 
@@ -189,10 +190,10 @@ export const DevicesTab: React.FC<DevicesTabProps> = ({ devices, onUpdateDevices
     <div className="grid gap-6 md:grid-cols-2">
       {/* Tarjeta de Impresoras */}
       <Card>
-        <CardHeader 
-          title="Impresoras" 
-          subtitle="Tickets, comandas y facturas." 
-          icon={PrinterIcon} 
+        <CardHeader
+          title="Impresoras"
+          subtitle="Tickets, comandas y facturas."
+          icon={PrinterIcon}
         />
         <CardContent>
           {devices.printers.map((device) => (
@@ -226,13 +227,13 @@ export const DevicesTab: React.FC<DevicesTabProps> = ({ devices, onUpdateDevices
           </SecondaryButton>
         </div>
       </Card>
-      
+
       {/* Tarjeta de Pantallas de Cocina (KDS) */}
       <Card>
-        <CardHeader 
-          title="Pantallas de Cocina (KDS)" 
-          subtitle="Agiliza los pedidos en cocina." 
-          icon={MonitorIcon} 
+        <CardHeader
+          title="Pantallas de Cocina (KDS)"
+          subtitle="Agiliza los pedidos en cocina."
+          icon={MonitorIcon}
         />
         <CardContent>
           {devices.kds.map((device) => (
@@ -266,13 +267,13 @@ export const DevicesTab: React.FC<DevicesTabProps> = ({ devices, onUpdateDevices
           </SecondaryButton>
         </div>
       </Card>
-      
+
       {/* Tarjeta de POS */}
       <Card>
-        <CardHeader 
-          title="POS" 
-          subtitle="Puntos de venta (Point of Sale)." 
-          icon={UsersIcon} 
+        <CardHeader
+          title="POS"
+          subtitle="Puntos de venta (Point of Sale)."
+          icon={UsersIcon}
         />
         <CardContent>
           {devices.pos.map((device) => (
@@ -306,13 +307,13 @@ export const DevicesTab: React.FC<DevicesTabProps> = ({ devices, onUpdateDevices
           </SecondaryButton>
         </div>
       </Card>
-      
+
       {/* Tarjeta de Cajas Registradoras */}
       <Card>
-        <CardHeader 
-          title="Cajas Registradoras" 
-          subtitle="Gestión de efectivo y pagos." 
-          icon={Building2Icon} 
+        <CardHeader
+          title="Cajas Registradoras"
+          subtitle="Gestión de efectivo y pagos."
+          icon={Building2Icon}
         />
         <CardContent>
           {devices.cashRegisters.map((device) => (

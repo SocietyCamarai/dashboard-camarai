@@ -21,7 +21,7 @@ interface ProfileTabProps {
 // Componentes reutilizables
 const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => {
   const { currentTheme, isDarkTheme } = useTheme();
-  
+
   const getCardColors = () => {
     if (isDarkTheme(currentTheme)) {
       return {
@@ -46,7 +46,7 @@ const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
 
 const CardHeader: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle }) => {
   const { currentTheme } = useTheme();
-  
+
   return (
     <div className="flex flex-col space-y-1.5 p-6">
       <div className="text-2xl leading-none tracking-tight font-bold" style={{ color: currentTheme.colors.textSecondary }}>
@@ -69,7 +69,7 @@ const CardContent: React.FC<{ children: React.ReactNode; className?: string }> =
 
 const CardFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentTheme } = useTheme();
-  
+
   return (
     <div className="flex items-center p-6 border-t px-6 py-4" style={{ borderTopColor: currentTheme.colors.border }}>
       {children}
@@ -77,14 +77,14 @@ const CardFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const PrimaryButton: React.FC<{ children: React.ReactNode; onClick?: () => void; disabled?: boolean; type?: "button" | "submit" }> = ({ 
-  children, 
-  onClick, 
-  disabled = false, 
-  type = "button" 
+const PrimaryButton: React.FC<{ children: React.ReactNode; onClick?: () => void; disabled?: boolean; type?: "button" | "submit" }> = ({
+  children,
+  onClick,
+  disabled = false,
+  type = "button"
 }) => {
   const { currentTheme, getButtonTextColor } = useTheme();
-  
+
   return (
     <button
       type={type}
@@ -112,7 +112,7 @@ const Input: React.FC<{
   maxLength?: number;
 }> = ({ id, label, value, onChange, type = "text", autoComplete, placeholder, maxLength }) => {
   const { currentTheme, isDarkTheme } = useTheme();
-  
+
   const getInputColors = () => {
     if (isDarkTheme(currentTheme)) {
       return {
@@ -151,7 +151,7 @@ const Input: React.FC<{
 export const ProfileTab: React.FC<ProfileTabProps> = ({ user, onUpdateUser }) => {
   const { currentTheme, getButtonTextColor } = useTheme();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [firstName, setFirstName] = useState(user?.nombre || '');
   const [lastName, setLastName] = useState(user?.apellidos || '');
@@ -172,14 +172,14 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ user, onUpdateUser }) =>
         alert('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP)');
         return;
       }
-      
+
       // Validar tamaño (máximo 5MB)
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSize) {
         alert('El archivo es demasiado grande. Máximo 5MB');
         return;
       }
-      
+
       const imageUrl = URL.createObjectURL(file);
       setAvatar(imageUrl);
     }
@@ -193,7 +193,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ user, onUpdateUser }) =>
 
   // Validar teléfono
   const isValidPhone = (phone: string): boolean => {
-    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
+    const phoneRegex = /^[+]?[0-9\s\-()]{9,}$/;
     return phoneRegex.test(phone);
   };
 
@@ -205,10 +205,10 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ user, onUpdateUser }) =>
   // Manejar envío del formulario
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    
+
     // Rate limiting - prevenir múltiples envíos
     if (isLoading) return;
-    
+
     setIsLoading(true);
 
     try {
@@ -255,7 +255,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ user, onUpdateUser }) =>
           setTimeout(resolve, 1000);
         });
       });
-      
+
       onUpdateUser({
         ...user,
         ...sanitizedData,

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { PlusIcon } from '../icons';
-import type { TabProps } from '../../types/components';
+import type { TabProps } from '../../types/compatibility.types';
 
 interface TabsProps {
-  ambientes: Array<{ id: string; nombre: string }>;
-  ambienteActivo: string;
-  onAmbienteChange: (id: string) => void;
+  ambientes: Array<{ id: number; nombre: string }>;
+  ambienteActivo: number;
+  onAmbienteChange: (id: number) => void;
   onAñadirAmbiente: () => void;
 }
 
@@ -62,7 +62,7 @@ export const Tabs: React.FC<TabsProps> = ({
           />
         ))}
       </div>
-      
+
       <button
         className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10"
         style={{

@@ -1,13 +1,13 @@
 import React from 'react';
 import AmbienteCard from './AmbienteCard';
 import CrearAmbienteCard from './CrearAmbienteCard';
-import type { Ambiente } from '../../types/components';
+import type { Ambiente } from '../../types/compatibility.types';
 
 interface AmbientesGridProps {
   ambientes: Ambiente[];
-  onToggleActivo: (id: string) => void;
-  onImprimirQR: (id: string) => void;
-  onEditarNombre: (id: string, nuevoNombre: string) => void;
+  onToggleActivo: (id: number) => void;
+  onImprimirQR: (id: number) => void;
+  onEditarNombre: (id: number, nuevoNombre: string) => void;
   onConfigurar: (ambiente: Ambiente) => void;
   onCrearAmbiente: () => void;
 }
@@ -21,9 +21,11 @@ const AmbientesGrid: React.FC<AmbientesGridProps> = ({
   onCrearAmbiente
 }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto">
+    <div className="grid gap-4 sm:gap-5 max-w-7xl mx-auto px-4 sm:px-0" style={{
+      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))'
+    }}>
       {ambientes.map((ambiente) => (
-        <div key={ambiente.id}>
+        <div key={ambiente.id} className="p-2">
           <AmbienteCard
             ambiente={ambiente}
             onToggleActivo={onToggleActivo}
@@ -33,8 +35,8 @@ const AmbientesGrid: React.FC<AmbientesGridProps> = ({
           />
         </div>
       ))}
-      <div className=""> 
-        <CrearAmbienteCard onCrearAmbiente={onCrearAmbiente} /> 
+      <div className="p-2">
+        <CrearAmbienteCard onCrearAmbiente={onCrearAmbiente} />
       </div>
     </div>
   );

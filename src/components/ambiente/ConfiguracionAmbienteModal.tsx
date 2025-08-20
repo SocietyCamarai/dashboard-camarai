@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  TrashIcon, 
+import {
+  TrashIcon,
   XIcon,
   UtensilsIcon,
   SunIcon,
@@ -8,7 +8,7 @@ import {
   CoffeeIcon,
   SmartphoneIcon
 } from '../icons';
-import type { Ambiente } from '../../types/components';
+import type { Ambiente } from '../../types/compatibility.types';
 import Header from '../home/Header';
 import ConfirmarEliminacionModal from './ConfirmarEliminacionModal';
 import { useTheme } from '../../hooks/useTheme';
@@ -71,13 +71,13 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
   // Actualizar estado cuando cambie el ambiente o se abra el modal
   useEffect(() => {
     if (ambiente && isOpen) {
-      setIconoSeleccionado(ambiente.icono);
-      setColorSeleccionado(ambiente.colorBorde);
+      setIconoSeleccionado(ambiente.icono || '');
+      setColorSeleccionado(ambiente.colorBorde || '');
       setNombre(ambiente.nombre);
-      setAforoTotal(ambiente.aforoTotal);
-      setMesas(ambiente.mesas);
-      setMesasActivas(ambiente.mesasActivas);
-      setEstado(ambiente.estado);
+      setAforoTotal(ambiente.aforoTotal || 0);
+      setMesas(ambiente.mesas || 0);
+      setMesasActivas(ambiente.mesasActivas || 0);
+      setEstado(ambiente.estado || 'Abierto');
     }
   }, [ambiente, isOpen]);
 
@@ -113,7 +113,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
 
   const handleSave = () => {
     const mesasActivasFinal = Math.min(mesasActivas, mesas); // No puede haber más mesas activas que totales
-    
+
     const ambienteActualizado: Ambiente = {
       ...ambiente,
       nombre: nombre.trim() || ambiente.nombre,
@@ -147,7 +147,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 backdrop-blur-[2px] flex items-center justify-center z-50 p-4"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
       onClick={handleBackdropClick}
@@ -160,7 +160,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
           <button
             onClick={onClose}
             className="transition-all duration-200 hover:bg-opacity-10 rounded p-1"
-            style={{ 
+            style={{
               color: currentTheme.colors.textSecondary,
               transition: 'all 0.2s ease-in-out'
             }}
@@ -189,7 +189,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-              style={{ 
+              style={{
                 borderColor: currentTheme.colors.border,
                 backgroundColor: currentTheme.colors.background,
                 color: currentTheme.colors.text
@@ -210,7 +210,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                 value={aforoTotal}
                 onChange={(e) => setAforoTotal(Math.max(0, parseInt(e.target.value) || 0))}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                style={{ 
+                style={{
                   borderColor: currentTheme.colors.border,
                   backgroundColor: currentTheme.colors.background,
                   color: currentTheme.colors.text
@@ -238,7 +238,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                   }
                 }}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                style={{ 
+                style={{
                   borderColor: currentTheme.colors.border,
                   backgroundColor: currentTheme.colors.background,
                   color: currentTheme.colors.text
@@ -266,7 +266,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                   setMesasActivas(Math.min(newMesasActivas, mesas)); // No puede exceder el total de mesas
                 }}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                style={{ 
+                style={{
                   borderColor: currentTheme.colors.border,
                   backgroundColor: currentTheme.colors.background,
                   color: currentTheme.colors.text
@@ -287,7 +287,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                 value={estado}
                 onChange={(e) => setEstado(e.target.value as 'Abierto' | 'Cerrado')}
                 className="w-full px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                style={{ 
+                style={{
                   borderColor: currentTheme.colors.border,
                   backgroundColor: currentTheme.colors.background,
                   color: currentTheme.colors.text
@@ -323,16 +323,15 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                 const isSelected = iconoSeleccionado === icono.id;
                 const IconComponent = icono.icon;
                 const iconColors = getIconColors(isSelected);
-                
+
                 return (
                   <button
                     key={icono.id}
                     onClick={() => setIconoSeleccionado(icono.id)}
-                    className={`p-3 rounded-lg border-2 transition-all duration-200 w-[50px] h-[50px] hover:scale-105 ${
-                      isSelected
-                        ? 'border-purple-600'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 w-[50px] h-[50px] hover:scale-105 ${isSelected
+                      ? 'border-purple-600'
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
                     style={{
                       backgroundColor: isSelected ? currentTheme.colors.primary : currentTheme.colors.background,
                       transition: 'all 0.2s ease-in-out'
@@ -349,12 +348,12 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                       }
                     }}
                   >
-                    <IconComponent 
-                      size={20} 
-                      style={{ 
+                    <IconComponent
+                      size={20}
+                      style={{
                         color: iconColors.color,
                         transition: iconColors.transition
-                      }} 
+                      }}
                     />
                   </button>
                 );
@@ -375,12 +374,11 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
                   <button
                     key={color.id}
                     onClick={() => setColorSeleccionado(color.color)}
-                    className={`w-10 h-10 rounded-full border-2 transition-all duration-200 hover:scale-110 ${
-                      isSelected
-                        ? 'border-purple-600 ring-2 ring-purple-200'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    style={{ 
+                    className={`w-10 h-10 rounded-full border-2 transition-all duration-200 hover:scale-110 ${isSelected
+                      ? 'border-purple-600 ring-2 ring-purple-200'
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    style={{
                       backgroundColor: color.color,
                       transition: 'all 0.2s ease-in-out'
                     }}
@@ -397,7 +395,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
           <button
             onClick={handleSave}
             className="w-full font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:scale-[1.02]"
-            style={{ 
+            style={{
               backgroundColor: currentTheme.colors.primary,
               color: getButtonTextColor(currentTheme),
               transition: 'all 0.2s ease-in-out'
@@ -414,7 +412,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
           <button
             onClick={handleDelete}
             className="w-full border font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 hover:scale-[1.02]"
-            style={{ 
+            style={{
               borderColor: currentTheme.colors.error,
               color: currentTheme.colors.error,
               transition: 'all 0.2s ease-in-out'
@@ -433,7 +431,7 @@ const ConfiguracionAmbienteModal: React.FC<ConfiguracionAmbienteModalProps> = ({
           </button>
         </div>
       </div>
-      
+
       {/* Modal de confirmación de eliminación */}
       <ConfirmarEliminacionModal
         isOpen={showConfirmDelete}

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from '../icons';
+import { useMesas } from '../../hooks/useEntities';
+import { useAuth } from '../../hooks/useAuth';
+import { mockPedidos, mockClientes } from '../../types/mockups.types';
 
 // Tipos para los datos de la tabla
 interface OrderData {
@@ -9,7 +12,7 @@ interface OrderData {
   table: string;
   name: string;
   total: string;
-  status: 'Completado' | 'En Progreso' | 'Cancelado';
+  status: 'Completado' | 'En Progreso' | 'Cancelado' | 'Pendiente';
 }
 
 interface TableProps {
@@ -17,37 +20,79 @@ interface TableProps {
   title?: string;
 }
 
-// Datos mockup basados en la imagen
-const mockData: OrderData[] = [
-  { order: '42', time: '14:30', table: '07', name: 'Alice Smith', total: '€350', status: 'En Progreso' },
-  { order: '18', time: '09:45', table: '12', name: 'Michael Johnson', total: '€150', status: 'Cancelado' },
-  { order: '33', time: '11:15', table: '09', name: 'Emily Davis', total: '€500', status: 'Completado' },
-  { order: '29', time: '16:00', table: '05', name: 'Chris Brown', total: '€250', status: 'Completado' },
-  { order: '37', time: '13:00', table: '10', name: 'Sarah Wilson', total: '€400', status: 'Completado' },
-];
+// Función para convertir pedidos de mockups a datos de tabla
+const convertPedidosToTableData = (mesas: any[]): OrderData[] => {
+  if (!mockPedidos || mockPedidos.length === 0) {
+    return [];
+  }
 
-const Table: React.FC<TableProps> = ({ 
-  data = mockData, 
-  title = "Comandas Recientes" 
+  return mockPedidos.map(pedido => {
+    // Buscar mesa y cliente relacionados
+    const mesa = mesas?.find(m => m.id === pedido.mesa_id);
+    const cliente = mockClientes?.find(c => c.id === pedido.cliente_id);
+
+    // Mapear estado
+    const statusMap: Record<string, OrderData['status']> = {
+      'pendiente': 'Pendiente',
+      'en_proceso': 'En Progreso',
+      'completado': 'Completado',
+      'cancelado': 'Cancelado'
+    };
+
+    // Formatear hora
+    const fecha = new Date(pedido.fecha_pedido);
+    const time = fecha.toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+
+    // Formatear total
+    const total = new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(pedido.total);
+
+    return {
+      order: pedido.id.toString(),
+      time,
+      table: mesa?.numero || 'S/M',
+      name: cliente ? `${cliente.nombre} ${cliente.apellidos || ''}`.trim() : 'Cliente no identificado',
+      total,
+      status: statusMap[pedido.estado] || 'Pendiente'
+    };
+  });
+};
+
+const Table: React.FC<TableProps> = ({
+  data,
+  title = "Comandas Recientes"
 }) => {
+  const { user } = useAuth();
+  const { mesas, loading: mesasLoading } = useMesas(user?.establecimiento_id || 1);
+
+  // Usar datos de mockups si no se proporcionan datos
+  const tableData = useMemo(() => {
+    return data || convertPedidosToTableData(mesas || []);
+  }, [data, mesas]);
   const { currentTheme } = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrders, setSelectedOrders] = useState<Set<string>>(new Set());
   const [isAnimating, setIsAnimating] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openHeaderDropdown, setOpenHeaderDropdown] = useState(false);
-  
+
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(tableData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentOrders = data.slice(startIndex, startIndex + itemsPerPage);
-  
+  const currentOrders = tableData.slice(startIndex, startIndex + itemsPerPage);
+
   // Generar números de página
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-  
+
   const paginate = (page: number) => {
     if (page < 1 || page > totalPages) return;
-    
+
     setIsAnimating(true);
     // Usar requestIdleCallback si está disponible, sino requestAnimationFrame
     const scheduleCallback = window.requestIdleCallback || requestAnimationFrame;
@@ -58,7 +103,7 @@ const Table: React.FC<TableProps> = ({
       }, 150);
     });
   };
-  
+
   const handleSelectOrder = (orderId: string) => {
     const newSelected = new Set(selectedOrders);
     if (newSelected.has(orderId)) {
@@ -68,7 +113,7 @@ const Table: React.FC<TableProps> = ({
     }
     setSelectedOrders(newSelected);
   };
-  
+
   const handleSelectAll = () => {
     if (selectedOrders.size === currentOrders.length) {
       setSelectedOrders(new Set());
@@ -76,7 +121,7 @@ const Table: React.FC<TableProps> = ({
       setSelectedOrders(new Set(currentOrders.map(order => order.order)));
     }
   };
-  
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Completado':
@@ -85,6 +130,8 @@ const Table: React.FC<TableProps> = ({
         return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'Cancelado':
         return 'bg-red-100 text-red-800 border-red-200';
+      case 'Pendiente':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }
@@ -100,17 +147,17 @@ const Table: React.FC<TableProps> = ({
         const dropdownElements = document.querySelectorAll('[data-dropdown]');
         const headerDropdownElement = document.querySelector('[data-header-dropdown]');
         let clickedInsideDropdown = false;
-        
+
         dropdownElements.forEach(element => {
           if (element.contains(target)) {
             clickedInsideDropdown = true;
           }
         });
-        
+
         if (headerDropdownElement && headerDropdownElement.contains(target)) {
           clickedInsideDropdown = true;
         }
-        
+
         if (!clickedInsideDropdown) {
           setOpenDropdown(null);
           setOpenHeaderDropdown(false);
@@ -134,7 +181,8 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
-  const handleAction = (_action: string, _orderId: string) => {
+  const handleAction = (action: string, orderId: string) => {
+    console.log(`Action: ${action}, Order: ${orderId}`);
     setOpenDropdown(null);
   };
 
@@ -142,18 +190,20 @@ const Table: React.FC<TableProps> = ({
     setOpenHeaderDropdown(!openHeaderDropdown);
   };
 
-  const handleHeaderAction = (_action: string) => {
+  const handleHeaderAction = (action: string) => {
+    console.log(`Header action: ${action}`);
     setOpenHeaderDropdown(false);
   };
-  
-  const cardBackground = currentTheme.colors.background;
+
+  const cardBackground = currentTheme.colors.sidebar;
   const cardBorder = currentTheme.colors.border;
   const textColor = currentTheme.colors.text;
   const textSecondaryColor = currentTheme.colors.textSecondary;
   const primaryColor = currentTheme.colors.primary;
-  
+  const buttonBackground = currentTheme.colors.background;
+
   return (
-    <div 
+    <div
       className="bg-card rounded-lg border shadow-sm"
       style={{
         backgroundColor: cardBackground,
@@ -163,13 +213,13 @@ const Table: React.FC<TableProps> = ({
       {/* Header */}
       <div className="flex flex-row items-center justify-between p-6 border-b" style={{ borderColor: cardBorder }}>
         <div>
-          <h3 
+          <h3
             className="text-lg font-bold"
             style={{ color: textSecondaryColor }}
           >
             {title}
           </h3>
-          <div 
+          <div
             className="mt-2 h-1 w-8 rounded-sm"
             style={{ backgroundColor: primaryColor }}
           />
@@ -177,10 +227,10 @@ const Table: React.FC<TableProps> = ({
         <div className="flex gap-2">
           {/* Select de exportación */}
           <div className="relative">
-            <select 
+            <select
               className="w-[180px] px-3 py-2 text-sm border rounded-md appearance-none cursor-pointer"
               style={{
-                backgroundColor: cardBackground,
+                backgroundColor: buttonBackground,
                 borderColor: cardBorder,
                 color: textColor,
               }}
@@ -192,12 +242,22 @@ const Table: React.FC<TableProps> = ({
               <option value="json">Exportar a JSON</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke={textColor}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </div>
           </div>
-          
+
           {/* Botón de más opciones */}
           <div data-header-dropdown className="relative">
             <button
@@ -205,18 +265,19 @@ const Table: React.FC<TableProps> = ({
               style={{
                 borderColor: cardBorder,
                 color: textColor,
+                backgroundColor: buttonBackground,
               }}
               onClick={handleHeaderDropdownToggle}
             >
               <MoreHorizontal className="h-4 w-4" />
             </button>
-            
+
             {/* Header Dropdown Menu */}
             {openHeaderDropdown && (
-              <div 
+              <div
                 className="absolute right-0 top-full mt-1 z-50 min-w-[200px] rounded-md shadow-lg border"
                 style={{
-                  backgroundColor: cardBackground,
+                  backgroundColor: currentTheme.colors.background,
                   borderColor: cardBorder,
                 }}
               >
@@ -248,12 +309,12 @@ const Table: React.FC<TableProps> = ({
           </div>
         </div>
       </div>
-      
+
       {/* Contenido de la tabla */}
       <div className="p-6">
         <table className="w-full">
           <thead>
-            <tr 
+            <tr
               className="border-b"
               style={{ borderColor: cardBorder }}
             >
@@ -279,15 +340,14 @@ const Table: React.FC<TableProps> = ({
             </tr>
           </thead>
           <tbody
-            className={`transition-opacity duration-300 ${
-              isAnimating ? 'opacity-0' : 'opacity-100'
-            }`}
+            className={`transition-opacity duration-300 ${isAnimating ? 'opacity-0' : 'opacity-100'
+              }`}
           >
             {currentOrders.map((order, index) => (
-              <tr 
+              <tr
                 key={order.order}
                 className="border-b transition-colors duration-200 cursor-pointer"
-                style={{ 
+                style={{
                   borderColor: cardBorder,
                   backgroundColor: index % 2 === 0 ? 'transparent' : `${cardBorder}10`
                 }}
@@ -318,7 +378,7 @@ const Table: React.FC<TableProps> = ({
                 <td className="py-2 text-sm" style={{ color: textColor }}>{order.name}</td>
                 <td className="py-2 text-sm" style={{ color: textColor }}>{order.total}</td>
                 <td className="py-2">
-                  <span 
+                  <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(order.status)}`}
                   >
                     {order.status}
@@ -338,22 +398,22 @@ const Table: React.FC<TableProps> = ({
                     >
                       <MoreHorizontal className="h-4 w-4" />
                     </button>
-                    
+
                     {/* Dropdown Menu */}
                     {openDropdown === order.order && (
-                      <div 
+                      <div
                         className="absolute right-0 top-full -mt-3 z-50 min-w-[160px] rounded-md shadow-lg border"
                         style={{
-                          backgroundColor: cardBackground,
+                          backgroundColor: currentTheme.colors.background,
                           borderColor: cardBorder,
                         }}
                       >
                         <div className="py-1">
-                          <div 
+                          <div
                             className="px-3 py-2 text-sm font-medium border-b"
-                            style={{ 
+                            style={{
                               color: textColor,
-                              borderColor: cardBorder 
+                              borderColor: cardBorder
                             }}
                           >
                             Acciones
@@ -398,12 +458,13 @@ const Table: React.FC<TableProps> = ({
           </tbody>
         </table>
       </div>
-      
+
       {/* Footer con paginación */}
       <div className="flex justify-end items-center gap-2 p-6 border-t" style={{ borderColor: cardBorder }}>
         <button
           className="p-2 border rounded-md hover:bg-opacity-10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
+            backgroundColor: buttonBackground,
             borderColor: cardBorder,
             color: textColor,
           }}
@@ -412,15 +473,14 @@ const Table: React.FC<TableProps> = ({
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        
+
         {pageNumbers.map(number => (
           <button
             key={number}
-            className={`p-2 w-8 h-8 flex items-center justify-center border rounded-md transition-colors ${
-              currentPage === number 
-                ? 'text-white' 
-                : 'hover:bg-opacity-10'
-            }`}
+            className={`p-2 w-8 h-8 flex items-center justify-center border rounded-md transition-colors ${currentPage === number
+              ? 'text-white'
+              : 'hover:bg-opacity-10'
+              }`}
             style={{
               borderColor: cardBorder,
               backgroundColor: currentPage === number ? primaryColor : 'transparent',
@@ -431,10 +491,11 @@ const Table: React.FC<TableProps> = ({
             {number}
           </button>
         ))}
-        
+
         <button
           className="p-2 border rounded-md hover:bg-opacity-10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
+            backgroundColor: buttonBackground,
             borderColor: cardBorder,
             color: textColor,
           }}

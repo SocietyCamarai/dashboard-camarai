@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { useDragAndResize } from '../../hooks/useDragAndResize';
 import { QrCodeIcon, Trash2Icon } from '../icons';
-import type { MesaProps } from '../../types/components';
+import type { MesaProps } from '../../types/compatibility.types';
 
 export const Mesa: React.FC<MesaProps> = ({
   mesa,
@@ -20,8 +20,8 @@ export const Mesa: React.FC<MesaProps> = ({
     isDragging,
     handleMouseDown
   } = useDragAndResize({
-    initialPosition: { x: mesa.x, y: mesa.y },
-    initialDimensions: { width: mesa.width, height: mesa.height },
+    initialPosition: { x: mesa.x || 0, y: mesa.y || 0 },
+    initialDimensions: { width: mesa.width || 128, height: mesa.height || 100 },
     onMove: (x, y) => onMover(mesa.id, x, y),
     onResize: (width, height) => onRedimensionar(mesa.id, width, height),
     constraints: {
@@ -62,9 +62,8 @@ export const Mesa: React.FC<MesaProps> = ({
   return (
     <div
       ref={elementRef}
-      className={`absolute p-4 bg-card border rounded-lg shadow-md cursor-grab active:cursor-grabbing flex flex-col items-center justify-center transition-opacity ${
-        seleccionada ? 'ring-2 ring-primary' : ''
-      } ${isDragging ? 'z-50' : ''}`}
+      className={`absolute p-4 bg-card border rounded-lg shadow-md cursor-grab active:cursor-grabbing flex flex-col items-center justify-center transition-opacity ${seleccionada ? 'ring-2 ring-primary' : ''
+        } ${isDragging ? 'z-50' : ''}`}
       style={{
         left: mesa.x,
         top: mesa.y,
@@ -81,16 +80,16 @@ export const Mesa: React.FC<MesaProps> = ({
       {/* Contenido de la mesa */}
       <div className="font-bold text-lg">{mesa.nombre}</div>
       <div className="flex items-center text-muted-foreground text-sm mt-1">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="16" 
-          height="16" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="w-4 h-4 mr-1"
         >
           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -123,7 +122,7 @@ export const Mesa: React.FC<MesaProps> = ({
       </div>
 
       {/* Handle de redimensionamiento */}
-      <div 
+      <div
         className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize bg-primary/50 rounded-full border-2 border-background"
         style={{
           backgroundColor: currentTheme.colors.primary + '80',

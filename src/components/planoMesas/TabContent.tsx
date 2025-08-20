@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AmbientePlano } from '../../types/components';
+import type { AmbientePlano } from '../../types/compatibility.types';
 
 interface TabContentProps {
   ambiente: AmbientePlano;

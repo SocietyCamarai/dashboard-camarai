@@ -1,9 +1,7 @@
-import { useTheme } from '../../../hooks/useTheme';
+import type { Theme } from '../../../types/theme/theme';
 
 // Función helper para obtener los colores correctos de los campos de entrada
-export const getInputColors = () => {
-  const { currentTheme, isDarkTheme } = useTheme();
-  
+export const getInputColors = (currentTheme: Theme, isDarkTheme: (theme: Theme) => boolean) => {
   if (isDarkTheme(currentTheme)) {
     return {
       backgroundColor: currentTheme.colors.inputBackgroundDark || currentTheme.colors.white,
@@ -19,9 +17,7 @@ export const getInputColors = () => {
 };
 
 // Función helper para obtener los colores correctos de las tarjetas
-export const getCardColors = () => {
-  const { currentTheme, isDarkTheme } = useTheme();
-  
+export const getCardColors = (currentTheme: Theme, isDarkTheme: (theme: Theme) => boolean) => {
   if (isDarkTheme(currentTheme)) {
     return {
       backgroundColor: currentTheme.colors.cardBackgroundDark || currentTheme.colors.white,
@@ -37,7 +33,7 @@ export const getCardColors = () => {
 };
 
 // Función para manejar cambios en objetos de datos
-export const handleDataChange = <T extends Record<string, any>>(
+export const handleDataChange = <T extends Record<string, unknown>>(
   data: T,
   field: keyof T,
   value: string,
@@ -83,6 +79,6 @@ export const isValidEmail = (email: string): boolean => {
 
 // Función para validar teléfono
 export const isValidPhone = (phone: string): boolean => {
-  const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
+  const phoneRegex = /^[+]?[0-9\s\-()]{9,}$/;
   return phoneRegex.test(phone);
 }; 

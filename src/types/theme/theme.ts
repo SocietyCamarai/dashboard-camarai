@@ -17,6 +17,7 @@ export interface Theme {
     inputBackgroundDark?: string;
     inputBorderDark?: string;
     cardBackgroundDark?: string;
+    cardForeground?: string;
   };
 }
 
@@ -35,10 +36,10 @@ export const isDarkTheme = (theme: Theme): boolean => {
   const r = parseInt(hex.substr(0, 2), 16);
   const g = parseInt(hex.substr(2, 2), 16);
   const b = parseInt(hex.substr(4, 2), 16);
-  
+
   // Calculate relative luminance
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  
+
   // Theme is dark if luminance is less than 0.5
   return luminance < 0.5;
 };

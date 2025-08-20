@@ -1,7 +1,4 @@
+// Solo exportar tipos específicos que NO están en compatibility.types.ts
 export * from './charts';
 export * from './filters';
-export * from './header';
-export * from './table';
-export * from './themeSelector';
-export * from './ambiente';
-export * from './planoMesas'; 
+export * from './themeSelector'; 

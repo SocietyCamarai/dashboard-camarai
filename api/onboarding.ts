@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// import type { VercelRequest, VercelResponse } from '@vercel/node';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.BACKEND_URL;
@@ -25,7 +25,7 @@ function isAxiosError(error: unknown): error is { response?: { status: number; d
   return typeof error === 'object' && error !== null && 'message' in error;
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -53,9 +53,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(error.response.status).json(error.response.data);
     }
     console.error('Error en onboarding:', error);
-    return res.status(500).json({ 
-      error: 'Error interno del servidor', 
-      details: isAxiosError(error) ? error.message : 'Unknown error' 
+    return res.status(500).json({
+      error: 'Error interno del servidor',
+      details: isAxiosError(error) ? error.message : 'Unknown error'
     });
   }
 } 

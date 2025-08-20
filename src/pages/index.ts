@@ -4,6 +4,7 @@ export { default as Ambientes } from './Ambientes';
 export { default as PlanoMesas } from './PlanoMesas';
 export { default as Promociones } from './Promociones';
 export { default as KDS } from './KDS';
+export { default as Personal } from './Personal';
 
 // Autenticación
 export { default as Login } from './Login';

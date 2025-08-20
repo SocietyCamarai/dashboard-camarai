@@ -2,16 +2,16 @@ import React, { useCallback, useRef, useEffect, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { CirclePlusIcon } from '../icons';
 import { ListaMesas } from './ListaMesas';
-import type { AmbientePlano } from '../../types/components';
+import type { AmbientePlano } from '../../types/compatibility.types';
 
 interface CanvasProps {
   ambiente: AmbientePlano;
-  mesaSeleccionada: string | null;
-  onMesaMover: (id: string, x: number, y: number) => void;
-  onMesaRedimensionar: (id: string, width: number, height: number) => void;
-  onMesaEliminar: (id: string) => void;
-  onMesaGenerarQR: (id: string) => void;
-  onMesaSeleccionar: (id: string) => void;
+  mesaSeleccionada: number | null;
+  onMesaMover: (id: number, x: number, y: number) => void;
+  onMesaRedimensionar: (id: number, width: number, height: number) => void;
+  onMesaEliminar: (id: number) => void;
+  onMesaGenerarQR: (id: number) => void;
+  onMesaSeleccionar: (id: number | null) => void;
   onAñadirMesa: () => void;
 }
 
@@ -59,15 +59,15 @@ export const Canvas: React.FC<CanvasProps> = ({
   const handleCanvasClick = useCallback((e: React.MouseEvent) => {
     // Si se hace click en el canvas (no en una mesa), deseleccionar
     if (e.target === e.currentTarget) {
-      onMesaSeleccionar('');
+      onMesaSeleccionar(null);
     }
   }, [onMesaSeleccionar]);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="rounded-lg border text-card-foreground shadow-sm bg-card flex-1 relative overflow-hidden"
-      style={{ 
+      style={{
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -76,7 +76,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     >
       {/* Header del canvas */}
       <div className="space-y-1.5 p-6 flex flex-row items-center justify-between flex-shrink-0">
-        <div 
+        <div
           className="tracking-tight text-lg font-bold text-muted-foreground"
           style={{ color: currentTheme.colors.textSecondary }}
         >
@@ -103,8 +103,8 @@ export const Canvas: React.FC<CanvasProps> = ({
             Escala: {(scale * 100).toFixed(0)}%
           </div>
         )}
-        
-        <div 
+
+        <div
           ref={canvasRef}
           className="bg-background dark:bg-zinc-800/20 rounded-lg border border-dashed relative select-none"
           style={{

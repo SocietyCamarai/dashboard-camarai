@@ -32,7 +32,8 @@ export const ProvidersTab: React.FC<ProvidersTabProps> = ({ providers, onUpdateP
   };
 
   // Manejar edición de proveedor
-  const handleEditProvider = (_providerId: number) => {
+  const handleEditProvider = (providerId: number) => {
+    console.log(`Editing provider: ${providerId}`);
     // Aquí se implementaría la lógica para editar un proveedor
   };
 
@@ -49,7 +50,7 @@ export const ProvidersTab: React.FC<ProvidersTabProps> = ({ providers, onUpdateP
 
   // Validar teléfono
   const isValidPhone = (phone: string): boolean => {
-    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{9,}$/;
+    const phoneRegex = /^[+]?[0-9\s\-()]{9,}$/;
     return phoneRegex.test(phone);
   };
 
@@ -119,12 +120,12 @@ export const ProvidersTab: React.FC<ProvidersTabProps> = ({ providers, onUpdateP
                 <h3 className="font-semibold" style={{ color: currentTheme.colors.text }}>{provider.name}</h3>
                 <p className="text-sm" style={{ color: currentTheme.colors.textSecondary }}>Contacto: {provider.contact}</p>
               </div>
-              <button 
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-8 w-8" 
-                type="button" 
-                aria-haspopup="menu" 
-                aria-expanded="false" 
-                data-state="closed" 
+              <button
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-8 w-8"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                data-state="closed"
                 style={{ color: currentTheme.colors.textSecondary }}
                 onClick={() => handleEditProvider(provider.id)}
               >
@@ -144,7 +145,7 @@ export const ProvidersTab: React.FC<ProvidersTabProps> = ({ providers, onUpdateP
             <div className="flex gap-2">
               <button
                 className="text-xs px-2 py-1 rounded border"
-                style={{ 
+                style={{
                   borderColor: currentTheme.colors.border,
                   color: currentTheme.colors.textSecondary,
                   backgroundColor: currentTheme.colors.inputBackgroundDark || currentTheme.colors.white
@@ -155,7 +156,7 @@ export const ProvidersTab: React.FC<ProvidersTabProps> = ({ providers, onUpdateP
               </button>
               <button
                 className="text-xs px-2 py-1 rounded border"
-                style={{ 
+                style={{
                   borderColor: currentTheme.colors.error,
                   color: currentTheme.colors.error,
                   backgroundColor: currentTheme.colors.inputBackgroundDark || currentTheme.colors.white

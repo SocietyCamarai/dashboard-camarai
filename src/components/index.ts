@@ -4,4 +4,6 @@ export { default as Sidebar } from './sidebar/Sidebar';
 export { Table } from './table';
 export * from './ambiente';
 export { SwitchToggle } from './SwitchToggle';
-export * from './planoMesas'; 
+export * from './planoMesas';
+export * from './home';
+export * from './personal'; 
